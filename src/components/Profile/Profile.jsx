@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useAuth } from "../../contextes/AuthContext";
 import { useParams } from "react-router";
 import axios from "axios";
+import Tweet from "../Tweet/Tweet";
 
 export async function getUser(token, uid) {
   const config = {
@@ -23,6 +24,26 @@ export async function getUser(token, uid) {
   return response;
 }
 
+async function getUserTweets(uid, token) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    credentials: "same-origin",
+    mode: "no-cors",
+  };
+  let res = await axios
+    .get(`https://twetterclone.herokuapp.com/feed/tweets/${uid}`, config)
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log({ err });
+    });
+  return res;
+}
+
 export default function Profile(props) {
   const Auth = useAuth();
   const paramId = useParams().id;
@@ -33,8 +54,10 @@ export default function Profile(props) {
   const [bio, setBio] = useState("");
   const [following, setFollowing] = useState([]);
   const [followers, setFollowers] = useState([]);
+  const [tweetsList, setTweetsList] = useState([]);
+
   useEffect(
-    () =>
+    () => {
       getUser(Auth.token, id).then((res) => {
         const user = res.data.user;
         setPhotoCover(user.photoCover);
@@ -43,10 +66,19 @@ export default function Profile(props) {
         setBio(user.bio);
         setFollowers(user.followers);
         setFollowing(user.following);
-      }),
+      });
+      getUserTweets(id, Auth.token).then((res) =>
+        setTweetsList(res.data.tweets)
+      );
+    },
     // eslint-disable-next-line
     []
   );
+
+  const tweetsFeed = tweetsList.map((tweet) => (
+    <Tweet key={tweet._id} tweet={tweet} img={photoProf} />
+  ));
+
   return (
     <div className={style.profileContainer}>
       <div className={style.profile}>
@@ -113,7 +145,7 @@ export default function Profile(props) {
             Likes
           </button>
         </div>
-        <div className={style.contentFeed}></div>
+        <div className={style.contentFeed}>{tweetsFeed}</div>
       </div>
     </div>
   );
