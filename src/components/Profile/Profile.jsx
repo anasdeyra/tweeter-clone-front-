@@ -51,10 +51,26 @@ export default function Profile(props) {
     <div className={style.profileContainer}>
       <div className={style.profile}>
         <div className={style.backgroundImage}>
-          <img className={style.bgv2} src={photoCover} alt="z2" />
+          <img
+            className={style.bgv2}
+            src={
+              photoCover
+                ? `https://twetterclone.herokuapp.com/images/${photoCover}`
+                : ""
+            }
+            alt="pc"
+          />
           <div className={style.profileInfo}>
             <div className={style.profileImage}>
-              <img src={photoProf} alt="zebi" className={style.img} />
+              <img
+                src={
+                  photoProf
+                    ? `https://twetterclone.herokuapp.com/images/${photoProf}`
+                    : ""
+                }
+                alt="pp"
+                className={style.img}
+              />
             </div>
 
             <div className={style.column}>
@@ -78,7 +94,10 @@ export default function Profile(props) {
           </div>
         </div>
       </div>
-      <div className={style.tweetFeed}></div>
+      <div className={style.profileContent}>
+        <div className={style.contentFilter}></div>
+        <div className={style.contentFeed}></div>
+      </div>
     </div>
   );
 }

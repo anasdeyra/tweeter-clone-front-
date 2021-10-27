@@ -1,5 +1,4 @@
 import axios from "axios";
-require('dotenv').config();
 const server = process.env.SERVER_URL || "https://twetterclone.herokuapp.com"
 const headers = {
     

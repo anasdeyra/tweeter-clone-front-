@@ -96,7 +96,7 @@
     position: relative;
     display: grid;
     grid-template-columns: none;
-    grid-template-rows: 152px auto 1fr auto;
+    grid-template-rows: 50px auto 1fr auto;
     width: 80%;
     margin: auto;
     background-color: rgb(var(--bg));
@@ -110,8 +110,8 @@
   }
 
   .profileImage {
-    position: absolute;
-    top: -45%;
+    position: relative;
+    top: -50%;
     left: initial;
   }
   .name {

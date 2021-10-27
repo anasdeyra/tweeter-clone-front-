@@ -53,13 +53,21 @@ export default function ProfileTow(props) {
         <div className={style.backgroundImage}>
           <img
             className={style.bgv2}
-            src={`https://twetterclone.herokuapp.com/images/${photoCover}`}
+            src={
+              photoCover
+                ? `https://twetterclone.herokuapp.com/images/${photoCover}`
+                : ""
+            }
             alt="pc"
           />
           <div className={style.profileInfo}>
             <div className={style.profileImage}>
               <img
-                src={`https://twetterclone.herokuapp.com/images/${photoProf}`}
+                src={
+                  photoProf
+                    ? `https://twetterclone.herokuapp.com/images/${photoProf}`
+                    : ""
+                }
                 alt="pp"
                 className={style.img}
               />
