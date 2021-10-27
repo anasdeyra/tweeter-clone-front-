@@ -80,17 +80,15 @@ export default function CreateTweet(props) {
       </div>
       <div className={style.createTweetActions}>
         <button type="button" className={style.tweetButton}>
-          <div>
-            <input
-              ref={uploadRef}
-              id="file"
-              type="file"
-              style={{ display: "none" }}
-            />
-            <span className={style.span}>
-              <InsertPhotoOutlinedIcon onClick={chooseFileHandler} />
-            </span>
-          </div>
+          <input
+            ref={uploadRef}
+            id="file"
+            type="file"
+            style={{ display: "none" }}
+          />
+          <span className={style.span}>
+            <InsertPhotoOutlinedIcon onClick={chooseFileHandler} />
+          </span>
         </button>
         <span className={style.span}>
           <button

@@ -5,5 +5,15 @@
   margin: auto;
   margin-top: 1.5rem;
   margin-bottom: 5.5rem;
-  grid-template-columns: auto 300px;
+  grid-template-columns: auto minmax(auto, 300px);
+}
+
+@media (max-width: 980px) {
+  .homeContainer {
+    grid-template-columns: 1fr;
+    width: 95%;
+  }
+  .homeSuggestions {
+    visibility: hidden;
+  }
 }

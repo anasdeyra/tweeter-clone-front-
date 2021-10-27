@@ -7,7 +7,8 @@
   min-height: 50px;
   padding: 1rem;
   gap: 1rem;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
   border-radius: 12px;
 }
 .tweetAuth {
@@ -105,12 +106,6 @@
   position: relative;
 }
 
-.box {
-  background: grey;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-}
 .createTweetInput {
   display: grid;
   grid-template-columns: minmax(40px, auto) 1fr;
@@ -136,6 +131,7 @@
   grid-template-columns: minmax(40px, auto) minmax(40px, auto) 1fr;
   justify-items: end;
   gap: 0 1rem;
+  padding-left: calc(40px - 0.5rem);
 }
 
 .tweetButton {
@@ -204,5 +200,6 @@
 
   .createTweetActions {
     gap: 0;
+    padding-left: 0;
   }
 }

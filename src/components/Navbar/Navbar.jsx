@@ -111,7 +111,7 @@ export default function Navbar(props) {
                         <ArrowDropDownIcon></ArrowDropDownIcon>
                       </div>
                       <div
-                        className={`${style.optionsContainer}${
+                        className={`bs-1 ${style.optionsContainer}${
                           !optionsTab ? ` ${style.invisible}` : ""
                         }`}
                       >
