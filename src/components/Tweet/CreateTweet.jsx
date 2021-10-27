@@ -113,7 +113,7 @@ export default function CreateTweet(props) {
               }}
               className={style.option}
             >
-              <PublicIcon /> Everyone can see
+              <PublicIcon /> Everyone can reply
             </button>
             <button
               type="button"
@@ -122,7 +122,7 @@ export default function CreateTweet(props) {
               }}
               className={style.option}
             >
-              <PeopleIcon /> Followers can see
+              <PeopleIcon /> Followers can reply
             </button>
           </div>
         </span>
