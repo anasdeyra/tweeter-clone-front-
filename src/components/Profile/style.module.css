@@ -1,0 +1,132 @@
+.muted {
+  color: rgb(var(--sd-text));
+  font-weight: 500;
+  margin: 0 0.5rem;
+}
+
+.followButton {
+  display: grid;
+  align-items: center;
+  grid-auto-flow: column;
+  gap: 2px;
+}
+.profileContainer {
+  display: grid;
+}
+.profile {
+  display: grid;
+  justify-content: center;
+}
+
+.backgroundImage {
+  width: 100vw;
+  height: 300px;
+  min-height: 200px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.profileInfo {
+  position: relative;
+  display: grid;
+  grid-template-columns: 152px auto 1fr auto;
+  width: 80%;
+  min-height: 160px;
+  margin: auto;
+  background-color: rgb(var(--bg));
+  padding: 2rem;
+  border-radius: 12px;
+  top: 75%;
+  justify-content: space-between;
+  justify-items: center;
+  align-items: start;
+  text-align: center;
+  gap: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.stats {
+  display: grid;
+  font-weight: 600;
+  grid-auto-flow: column;
+  padding-top: 1rem;
+  text-align: center;
+  justify-self: start;
+}
+
+.column {
+  display: grid;
+  grid-auto-flow: row;
+  justify-items: start;
+  justify-content: start;
+}
+
+.profileImage {
+  position: relative;
+  top: -50%;
+}
+.img {
+  width: 152px;
+  height: 152px;
+  border-radius: 12px;
+}
+
+.name {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.bgv2 {
+  position: absolute;
+  width: 100vw;
+  height: 300px;
+  min-height: 200px;
+  object-fit: cover;
+}
+
+.profileContent {
+  width: 80%;
+  margin: auto;
+  background: red;
+  height: 300px;
+}
+
+@media only screen and (max-width: 980px) {
+  .profileInfo {
+    position: relative;
+    display: grid;
+    grid-template-columns: none;
+    grid-template-rows: 152px auto 1fr auto;
+    width: 80%;
+    margin: auto;
+    background-color: rgb(var(--bg));
+    padding: 2rem;
+    border-radius: 12px;
+    top: 75%;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
+
+  .profileImage {
+    position: absolute;
+    top: -45%;
+    left: initial;
+  }
+  .name {
+    margin-left: 0px;
+    margin-top: 2rem;
+  }
+  .column {
+    display: grid;
+    grid-auto-flow: row;
+    justify-items: center;
+    justify-content: center;
+    padding-bottom: 2rem;
+  }
+
+  .stats {
+    justify-self: center;
+  }
+}

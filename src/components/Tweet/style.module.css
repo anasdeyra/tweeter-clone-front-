@@ -1,0 +1,211 @@
+.tweetContainer {
+  margin: auto;
+  display: grid;
+  grid-template-rows: repeat(5, auto);
+  min-width: 300px;
+  max-width: 600px;
+  min-height: 50px;
+  padding: 1rem;
+  gap: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 12px;
+}
+.tweetAuth {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: start;
+  gap: 1rem;
+}
+.tweetDate {
+  color: rgb(var(--sd-text));
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.tweetImage {
+  object-fit: cover;
+  width: 100%;
+  border-radius: 12px;
+  justify-self: center;
+}
+
+.tweetCaption {
+  font-family: Noto Sans;
+  font-weight: 400;
+}
+
+.tweetActions {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+}
+
+.actionButton {
+  display: grid;
+  align-items: center;
+  justify-content: space-evenly;
+  justify-items: center;
+  grid-auto-flow: column;
+  color: rgb(var(--text));
+  width: 100%;
+  background: rgb(var(--bg));
+}
+.actionButton:hover {
+  background: #f2f2f2;
+}
+
+.tweetComment {
+  display: grid;
+  grid-template-columns: minmax(40px, auto) 1fr;
+  justify-content: start;
+  gap: 1rem;
+  width: 100%;
+}
+
+.commentInput {
+  width: 100%;
+  border: none;
+  outline-color: rgb(var(--pr));
+  padding: 0 0.5rem;
+  font-family: Noto Sans;
+  background: #f2f2f2;
+  border-radius: 12px;
+}
+
+.tweetStats {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, auto);
+  justify-items: end;
+  justify-content: end;
+}
+.stat {
+  color: rgb(var(--sd-text));
+  font-family: Noto Sans;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+@media (max-width: 540px) {
+  .buttonText {
+    display: none;
+  }
+}
+
+/*CreatTweet styles*/
+
+.createTweetContainer {
+  padding: 1rem;
+  display: grid;
+  background: rgb(var(--bg));
+  grid-template-rows: repeat(3, auto);
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 8px;
+  gap: 0.25rem 0.5rem;
+  position: relative;
+}
+
+.box {
+  background: grey;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+.createTweetInput {
+  display: grid;
+  grid-template-columns: minmax(40px, auto) 1fr;
+  gap: 0 0.5rem;
+}
+
+.createTweetInput > input {
+  width: 100%;
+  border: none;
+  outline-color: rgb(var(--pr));
+  padding: 0 0.5rem;
+  font-family: Noto Sans;
+}
+
+.title {
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 0.86rem;
+  padding: 0 0 0.5rem 0;
+}
+
+.createTweetActions {
+  display: grid;
+  grid-template-columns: minmax(40px, auto) minmax(40px, auto) 1fr;
+  justify-items: end;
+  gap: 0 1rem;
+}
+
+.tweetButton {
+  display: flex;
+  padding: 0;
+  background: none;
+  color: rgb(var(--text));
+  vertical-align: center;
+  align-items: center;
+  gap: 0 0.5rem;
+  position: relative;
+}
+
+.span {
+  display: flex;
+  vertical-align: center;
+  align-items: center;
+  padding: 0;
+}
+.tweetButton:hover {
+  background: none;
+  color: rgb(var(--pr));
+}
+
+.imageUpload {
+  background: red;
+}
+
+.optionGroup {
+  position: absolute;
+  bottom: -155px;
+  display: grid;
+  padding: 0.5rem;
+  background: rgb(var(--bg));
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 12px;
+  gap: 0.5rem;
+}
+
+.option {
+  display: flex;
+  padding: 0.5rem;
+  background: none;
+  color: rgb(var(--text));
+  vertical-align: center;
+  align-items: center;
+  gap: 0 0.5rem;
+  border-radius: 8px;
+}
+.optionGroupHeading {
+  font-size: 0.86rem;
+  color: rgb(var(--text));
+}
+
+.optionGroupDesc {
+  font-family: Noto Sans;
+  font-size: 0.86rem;
+  color: rgb(var(--sd-text));
+  margin-bottom: 0.5rem;
+}
+
+.option:hover {
+  background: #f2f2f2;
+}
+
+@media (max-width: 540px) {
+  .tweetButton {
+    justify-self: start;
+  }
+
+  .createTweetActions {
+    gap: 0;
+  }
+}

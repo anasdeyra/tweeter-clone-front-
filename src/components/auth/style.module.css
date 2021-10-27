@@ -1,0 +1,91 @@
+.form {
+  width: 55%;
+  margin: auto;
+  display: block;
+  margin-top: 10rem;
+  padding: 1rem;
+  background: rgb(var(--bg));
+}
+
+.element {
+  display: grid;
+  gap: 1rem 0;
+  font-size: 1.2rem;
+  grid-auto-flow: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inputText {
+  font-size: 1.2rem;
+  border: none;
+  border-bottom: 3px solid rgb(var(--pr));
+  outline: none;
+  background: inherit;
+}
+
+.muted {
+  font-size: 0.8rem;
+  color: rgb(var(--sd-text));
+  font-family: "noto Sans";
+}
+
+.link {
+  color: rgb(var(--pr));
+}
+
+.link:active {
+  color: rgb(var(--r));
+}
+
+.details {
+  margin: auto;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, 1fr);
+  margin-bottom: 1rem;
+}
+.title {
+  margin: 2rem 0;
+  color: rgb(var(--pr));
+}
+@media (max-width: 540px) {
+  .form {
+    width: 100%;
+    margin-top: 0;
+    height: 100vh;
+  }
+  .title {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+
+  .element {
+    display: grid;
+    gap: 1.5rem 0;
+    font-size: 1.2rem;
+    grid-auto-flow: row;
+    justify-content: stretch;
+    align-items: stretch;
+  }
+  .footer {
+    justify-self: center;
+  }
+  .x {
+    width: 100%;
+    margin-top: 5rem;
+  }
+
+  .inputText {
+    font-size: 1.2rem;
+    border: none;
+  }
+
+  .inputText:focus {
+    outline: 3px solid rgb(var(--pr));
+    font-size: 1.5rem;
+  }
+  .details {
+    gap: 1.5rem;
+  }
+}
