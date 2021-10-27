@@ -166,7 +166,8 @@
   width: 80%;
   padding: 0;
   grid-template-columns: 300px 1fr;
-  gap: 0 1rem;
+  gap: 1rem;
+  margin-bottom: 5.5rem;
 }
 
 .contentFilter {
@@ -183,7 +184,7 @@
 
 .filterButton {
   font-weight: 600;
-  color: rgb(var(--pr-text));
+  color: #828282;
   background: none;
   text-align: start;
 }
@@ -198,5 +199,11 @@
 @media (max-width: 980px) {
   .overflowSpacer {
     height: 330px;
+  }
+
+  .profileContent {
+    margin-top: 0;
+    grid-template-rows: 300px 1fr;
+    grid-template-columns: none;
   }
 }

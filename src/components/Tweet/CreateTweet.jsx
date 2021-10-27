@@ -8,7 +8,7 @@ import { AuthContext } from "../../contextes/AuthContext";
 import FormData from "form-data";
 import PublicIcon from "@mui/icons-material/Public";
 
-export default function CreateTweet() {
+export default function CreateTweet(props) {
   const Auth = useContext(AuthContext);
   const [caption, setCaption] = useState("");
   const [isPublic, toggleIsPublic] = useState(true);

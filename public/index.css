@@ -13,6 +13,10 @@
   color: #bdbdbd;
 }
 
+::-webkit-scrollbar {
+  width: 0;
+}
+
 :root {
   --bg: 255, 255, 255;
   --pr-text: 51, 51, 51;

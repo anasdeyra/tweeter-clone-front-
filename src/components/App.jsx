@@ -10,7 +10,6 @@ import { AuthContext, AuthProvider } from "../contextes/AuthContext.jsx";
 import Home from "./Home/Home.jsx";
 import Navbar from "./Navbar/Navbar.jsx";
 import Profile from "./Profile/Profile.jsx";
-import CreateTweet from "./Tweet/CreateTweet";
 
 export default class App extends Component {
   render() {
@@ -32,7 +31,7 @@ export default class App extends Component {
                     path="/profile"
                     children={<Profile self={true} />}
                   />
-                  <Route exact path="/test" children={<CreateTweet />} />
+                  <Route exact path="/test" children={<div />} />
                   <Route path="*" children={<Redirect to="/home" />} />
                 </Switch>
               </Router>

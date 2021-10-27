@@ -99,7 +99,8 @@
   background: rgb(var(--bg));
   grid-template-rows: repeat(3, auto);
   border-radius: 12px;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 8px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
   gap: 0.25rem 0.5rem;
   position: relative;
 }
@@ -146,6 +147,7 @@
   align-items: center;
   gap: 0 0.5rem;
   position: relative;
+  color: #828282;
 }
 
 .span {
@@ -157,10 +159,6 @@
 .tweetButton:hover {
   background: none;
   color: rgb(var(--pr));
-}
-
-.imageUpload {
-  background: red;
 }
 
 .optionGroup {
@@ -186,7 +184,6 @@
 }
 .optionGroupHeading {
   font-size: 0.86rem;
-  color: rgb(var(--text));
 }
 
 .optionGroupDesc {

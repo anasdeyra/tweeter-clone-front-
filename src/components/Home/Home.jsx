@@ -1,38 +1,26 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../contextes/AuthContext";
 import { Redirect } from "react-router";
-import { logout } from "../auth/auth";
+import CreateTweet from "../Tweet/CreateTweet";
+import style from "./style.module.css";
 
 export default function Home() {
   const Auth = useContext(AuthContext);
-  function clickHandler() {
-    logout(Auth);
-  }
 
   if (!Auth.user) {
     return <Redirect to="login" />;
   } else {
     return (
-      <div id="Profile">
+      <>
         {Auth.user && (
-          <>
-            <h3
-              style={{
-                color: "red",
-                textAlign: "center",
-                background: "black",
-                margin: 0,
-                minHeight: "500px",
-              }}
-            >
-              {JSON.stringify(Auth.user.userId)}
-            </h3>
-            <button onClick={() => clickHandler(Auth)} className="pr">
-              Lougout
-            </button>
-          </>
+          <div className={style.homeContainer}>
+            <div className={style.homeFeed}>
+              <CreateTweet />
+            </div>
+            <div className={style.homeSuggestions}></div>
+          </div>
         )}
-      </div>
+      </>
     );
   }
 }

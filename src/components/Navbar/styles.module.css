@@ -93,6 +93,7 @@
 }
 
 .mobileBarList {
+  background: rgb(var(--bg));
   display: none;
   position: fixed;
   left: 0;

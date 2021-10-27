@@ -43,7 +43,6 @@ export default function Profile(props) {
         setBio(user.bio);
         setFollowers(user.followers);
         setFollowing(user.following);
-        console.log(res);
       }),
     // eslint-disable-next-line
     []
