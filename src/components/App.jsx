@@ -10,7 +10,6 @@ import { AuthContext, AuthProvider } from "../contextes/AuthContext.jsx";
 import Home from "./Home/Home.jsx";
 import Navbar from "./Navbar/Navbar.jsx";
 import Profile from "./Profile/Profile.jsx";
-import ProfileTow from "./Profile/Profile2.jsx";
 import CreateTweet from "./Tweet/CreateTweet";
 
 export default class App extends Component {
@@ -31,7 +30,7 @@ export default class App extends Component {
                   <Route
                     exact
                     path="/profile"
-                    children={<ProfileTow self={true} />}
+                    children={<Profile self={true} />}
                   />
                   <Route exact path="/test" children={<CreateTweet />} />
                   <Route path="*" children={<Redirect to="/home" />} />

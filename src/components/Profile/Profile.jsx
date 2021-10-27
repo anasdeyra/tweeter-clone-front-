@@ -43,6 +43,7 @@ export default function Profile(props) {
         setBio(user.bio);
         setFollowers(user.followers);
         setFollowing(user.following);
+        console.log(res);
       }),
     // eslint-disable-next-line
     []
@@ -74,15 +75,18 @@ export default function Profile(props) {
             </div>
 
             <div className={style.column}>
-              <h3 className={style.name}>{username}</h3>
+              <div className={style.column2}>
+                <h3 className={style.name}>{username}</h3>
+                <div className={style.stats}>
+                  {following.length}
+                  <p className={style.muted}>Following</p>
+                  {followers.length}
+                  <p className={style.muted}>Followers</p>
+                </div>
+              </div>
               <p className={style.bio}>{bio}</p>
             </div>
-            <div className={style.stats}>
-              {following.length}
-              <p className={style.muted}>Following</p>
-              {followers.length}
-              <p className={style.muted}>Followers</p>
-            </div>
+
             {Auth.username !== username ? (
               <button className={`pr ${style.followButton}`}>
                 <ControlPointIcon sx={{ width: 14, height: 14 }} />
@@ -94,8 +98,22 @@ export default function Profile(props) {
           </div>
         </div>
       </div>
+      <div className={style.overflowSpacer}></div>
       <div className={style.profileContent}>
-        <div className={style.contentFilter}></div>
+        <div className={style.contentFilter}>
+          <button className={style.filterButton} type="button">
+            Tweets
+          </button>
+          <button className={style.filterButton} type="button">
+            Tweets & replies
+          </button>
+          <button className={style.filterButton} type="button">
+            Media
+          </button>
+          <button className={style.filterButton} type="button">
+            Likes
+          </button>
+        </div>
         <div className={style.contentFeed}></div>
       </div>
     </div>

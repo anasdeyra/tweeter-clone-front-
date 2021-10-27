@@ -27,8 +27,6 @@ export default function CreateTweet() {
     data.set("comment", caption);
     if (uploadRef.current.files.length > 0) {
       const img = uploadRef.current.files[0];
-      console.log(uploadRef);
-      console.log(img);
       data.set("image", img);
     }
     const config = {
@@ -69,7 +67,9 @@ export default function CreateTweet() {
       <h4 className={style.title}>Tweet something</h4>
       <div className={style.createTweetInput}>
         <Avatar
-          src={`https://twetterclone.herokuapp.com/images/${Auth?.user?.pp}`}
+          src={`https://twetterclone.herokuapp.com/images/${
+            Auth?.user?.pp ? Auth?.user?.pp : `pp.png`
+          }`}
           variant="rounded"
         />
         <input
