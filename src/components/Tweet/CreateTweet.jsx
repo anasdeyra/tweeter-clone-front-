@@ -43,7 +43,7 @@ export default function CreateTweet(props) {
         data,
         config
       )
-      .then((res) => {})
+      .then()
       .catch((err) => {
         console.log(err);
       });

@@ -1,12 +1,68 @@
 import style from "./style.module.css";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Avatar } from "@mui/material";
 import ModeCommentOutlinedIcon from "@mui/icons-material/ModeCommentOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import AutorenewOutlinedIcon from "@mui/icons-material/AutorenewOutlined";
+import axios from "axios";
+
+async function doAction(action, postId, token) {
+  const data = { postId };
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    credentials: "same-origin",
+    mode: "no-cors",
+  };
+  var endPoint = "";
+  switch (action) {
+    case "like":
+      endPoint = "like-post";
+      break;
+    case "save":
+      endPoint = "save-tweet";
+      break;
+    case "retweet":
+      endPoint = "retweet-post";
+      break;
+    default:
+      endPoint = "like-post";
+  }
+
+  let response = await axios
+    .post(`https://twetterclone.herokuapp.com/feed/${endPoint}`, data, config)
+    .then((res) => {
+      return res;
+    });
+  return response;
+}
 
 export default function Tweet(props) {
+  const [isLiked, setIsLiked] = useState(false);
+  function parseLikes() {
+    try {
+      props.tweet.likes.forEach((like) => {
+        if (props.auth.userId === like.userId) {
+          setIsLiked(true);
+          throw {};
+        }
+      });
+    } catch {}
+  }
+  const [isSaved, setIsSaved] = useState(
+    props.tweet.saves.includes(props.auth.userId)
+  );
+  const [isRetweeted, setIsRetweeted] = useState(
+    props.tweet.retweets.includes(props.auth.userId)
+  );
+
+  useEffect(() => {
+    parseLikes();
+  }, []);
+
   return (
     <div className={style.tweetContainer}>
       <div className={style.tweetAuth}>
@@ -34,17 +90,41 @@ export default function Tweet(props) {
       </div>
       <div className={style.tweetActions}>
         <button className={style.actionButton}>
-          <ModeCommentOutlinedIcon />{" "}
+          <ModeCommentOutlinedIcon />
           <p className={style.buttonText}>Comments</p>
         </button>
-        <button className={style.actionButton}>
+        <button
+          onClick={() => {
+            doAction("retweet", props.tweet._id, props.auth.token).then((res) =>
+              setIsRetweeted(!isRetweeted)
+            );
+          }}
+          style={isRetweeted ? { color: "rgb(var(--g))" } : null}
+          className={style.actionButton}
+        >
           <AutorenewOutlinedIcon /> <p className={style.buttonText}>Retweet</p>
         </button>
-        <button className={style.actionButton}>
+        <button
+          onClick={() => {
+            doAction("like", props.tweet._id, props.auth.token).then((res) =>
+              setIsLiked(!isLiked)
+            );
+          }}
+          style={isLiked ? { color: "rgb(var(--r))" } : null}
+          className={style.actionButton}
+        >
           <FavoriteBorderOutlinedIcon />
-          <p className={style.buttonText}> Like</p>
+          <p className={style.buttonText}>Like</p>
         </button>
-        <button className={style.actionButton}>
+        <button
+          onClick={() => {
+            doAction("save", props.tweet._id, props.auth.token).then((res) =>
+              setIsSaved(!isSaved)
+            );
+          }}
+          style={isSaved ? { color: "rgb(var(--b))" } : null}
+          className={style.actionButton}
+        >
           <BookmarkBorderOutlinedIcon />
           <p className={style.buttonText}> Bookmark</p>
         </button>

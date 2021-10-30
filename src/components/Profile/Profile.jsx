@@ -68,7 +68,7 @@ export default function Profile(props) {
         setFollowing(user.following);
       });
       getUserTweets(id, Auth.token).then((res) =>
-        setTweetsList(res.data.tweets)
+        setTweetsList(res?.data?.tweets)
       );
     },
     // eslint-disable-next-line
@@ -76,7 +76,7 @@ export default function Profile(props) {
   );
 
   const tweetsFeed = tweetsList.map((tweet) => (
-    <Tweet key={tweet._id} tweet={tweet} img={photoProf} />
+    <Tweet auth={Auth} key={tweet._id} tweet={tweet} img={photoProf} />
   ));
 
   return (
