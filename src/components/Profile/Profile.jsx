@@ -76,7 +76,7 @@ export default function Profile(props) {
   );
 
   const tweetsFeed = tweetsList.map((tweet) => (
-    <Tweet auth={Auth} key={tweet._id} tweet={tweet} img={photoProf} />
+    <Tweet auth={Auth} key={tweet._id} tweet={tweet} />
   ));
 
   return (

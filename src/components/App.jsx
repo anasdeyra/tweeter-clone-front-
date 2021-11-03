@@ -10,6 +10,7 @@ import { AuthContext, AuthProvider } from "../contextes/AuthContext.jsx";
 import Home from "./Home/Home.jsx";
 import Navbar from "./Navbar/Navbar.jsx";
 import Profile from "./Profile/Profile.jsx";
+import Settings from "./Settings/Settings.jsx";
 
 export default class App extends Component {
   render() {
@@ -25,6 +26,7 @@ export default class App extends Component {
                   <Route exact path="/login" children={<Login />} />
                   <Route exact path="/signup" children={<Signup />} />
                   <Route exact path="/home" children={<Home />} />
+                  <Route exact path="/settings" children={<Settings />} />
                   <Route exact path="/profile/:id" children={<Profile />} />
                   <Route
                     exact

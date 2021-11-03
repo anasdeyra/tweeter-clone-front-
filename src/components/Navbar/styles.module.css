@@ -217,6 +217,7 @@
 
   .mobileBarList {
     display: grid;
+    z-index: 10;
   }
 
   @keyframes optionsContainerAnimation {

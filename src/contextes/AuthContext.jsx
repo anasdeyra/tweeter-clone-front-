@@ -18,7 +18,7 @@ export function AuthProvider({ children }) {
 }
 
 export function useAuth() {
-  var Auth = {};
+  var Auth = null;
   var lsUser = localStorage.getItem("currentUser");
   if (lsUser) {
     Auth = JSON.parse(lsUser);

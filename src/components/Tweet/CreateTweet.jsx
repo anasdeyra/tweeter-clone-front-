@@ -83,6 +83,7 @@ export default function CreateTweet(props) {
           <input
             ref={uploadRef}
             id="file"
+            accept="image/*"
             type="file"
             style={{ display: "none" }}
           />
