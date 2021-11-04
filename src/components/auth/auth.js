@@ -12,6 +12,7 @@ export function signUp(name, email, password, toggleLoading) {
     }, headers).then((response) => {
         toggleLoading()
     }).catch(err => {
+        console.log(err.response)
         toggleLoading()
     });
 

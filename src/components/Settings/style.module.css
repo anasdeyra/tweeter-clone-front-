@@ -58,6 +58,10 @@
   font-family: "noto Sans";
 }
 
+.copyToken {
+  justify-self: center;
+  margin-top: -2rem;
+}
 @media (max-width: 540px) {
   .textInputList {
     grid-template-columns: none;

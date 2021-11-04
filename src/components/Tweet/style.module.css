@@ -4,8 +4,7 @@
   display: grid;
   grid-template-rows: repeat(5, auto);
   min-width: 300px;
-  max-width: 600px;
-  min-height: 50px;
+  width: 100%;
   padding: 1rem;
   padding-bottom: 2rem;
   gap: 1rem;

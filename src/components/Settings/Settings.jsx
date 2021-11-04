@@ -19,11 +19,15 @@ async function submitUpdate(token, data) {
   try {
     let response = await axios
       .put(`https://twetterclone.herokuapp.com/edit/user-info`, data, config)
-      .then((res) => res)
+      .then((res) => {
+        console.log(res);
+        return res;
+      })
       .catch((err) => (error = err));
     if (!error) {
       return response;
     } else {
+      console.log({ error });
       throw error;
     }
   } catch (error) {
@@ -58,6 +62,12 @@ export default function Settings() {
   const profilePictureRef = useRef();
   const profileCoverRef = useRef();
   const history = useHistory();
+  const tokenRef = useRef();
+  function copyHandler(e) {
+    const text = tokenRef.current.innerText;
+    navigator.clipboard.writeText(text);
+    e.target.innerText = "token copied";
+  }
 
   function userDetailsHandler() {
     getUserDetails(auth.userId, auth.token).then(({ data }) => {
@@ -88,13 +98,14 @@ export default function Settings() {
     submitUpdate(auth.token, data)
       .then((res) => {
         setIsLoading(false);
-        console.log({ res });
+        history.push("/profile");
       })
       .catch((err) => {
         setIsLoading(false);
         setError(JSON.stringify(err?.response?.data?.data[0]?.msg));
       });
   }
+  //eslint-disable-next-line
   useEffect(userDetailsHandler, []);
   return (
     <form onSubmit={submitHandler}>
@@ -131,6 +142,29 @@ export default function Settings() {
             profilePictureRef.current.click();
           }}
         />
+        <h2 style={{ justifySelf: "center", display: "inline" }}>
+          {auth.username}
+        </h2>
+        <p
+          style={{
+            justifySelf: "center",
+            marginTop: "-2rem",
+            fontSize: "0.9rem",
+          }}
+        >
+          {" "}
+          ({auth.userId})
+        </p>
+        <p style={{ display: "none" }} ref={tokenRef}>
+          {auth.token}
+        </p>
+        <button
+          className={`pr ${style.copyToken}`}
+          onClick={copyHandler}
+          type="button"
+        >
+          copy token
+        </button>
         <p className={style.error}>{error}</p>
         <div className={style.textInputList}>
           <label htmlFor="username">Username: </label>

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import style from "./style.module.css";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import { useEffect } from "react";
 import { useAuth } from "../../contextes/AuthContext";
 import { useParams } from "react-router";
 import axios from "axios";
 import Tweet from "../Tweet/Tweet";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 export async function getUser(token, uid) {
   const config = {
@@ -37,9 +37,6 @@ async function getUserTweets(uid, token) {
     .get(`https://twetterclone.herokuapp.com/feed/tweets/${uid}`, config)
     .then((res) => {
       return res;
-    })
-    .catch((err) => {
-      console.log({ err });
     });
   return res;
 }
@@ -51,10 +48,23 @@ export default function Profile(props) {
   const [photoCover, setPhotoCover] = useState("");
   const [photoProf, setPhotoProf] = useState("");
   const [username, setUsername] = useState("");
+  const [userId, setUserId] = useState("");
   const [bio, setBio] = useState("");
   const [following, setFollowing] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [tweetsList, setTweetsList] = useState([]);
+  const [isFollowed, setIsFollowed] = useState(false);
+  function parseFollowers() {
+    try {
+      followers.forEach((user) => {
+        if (user.userId === Auth.userId) {
+          console.log("g is follwing me");
+          setIsFollowed(true);
+          throw Error;
+        }
+      });
+    } catch (e) {}
+  }
 
   useEffect(
     () => {
@@ -66,18 +76,36 @@ export default function Profile(props) {
         setBio(user.bio);
         setFollowers(user.followers);
         setFollowing(user.following);
+        console.log(user);
+        setUserId(user._id);
       });
       getUserTweets(id, Auth.token).then((res) =>
         setTweetsList(res?.data?.tweets)
       );
     },
     // eslint-disable-next-line
-    []
+    [props.self]
   );
+  useEffect(parseFollowers, [followers]);
 
   const tweetsFeed = tweetsList.map((tweet) => (
     <Tweet auth={Auth} key={tweet._id} tweet={tweet} />
   ));
+
+  function followUserHandler() {
+    const data = { followingId: id };
+    const config = {
+      headers: {
+        Authorization: `Bearer ${Auth.token}`,
+        "Content-Type": "application/json",
+      },
+      credentials: "same-origin",
+      mode: "no-cors",
+    };
+    axios
+      .post(`https://twetterclone.herokuapp.com/feed/follow-user`, data, config)
+      .then(setIsFollowed(!isFollowed));
+  }
 
   return (
     <div className={style.profileContainer}>
@@ -118,14 +146,28 @@ export default function Profile(props) {
               <p className={style.bio}>{bio}</p>
             </div>
 
-            {Auth.username !== username ? (
-              <button className={`pr ${style.followButton}`}>
-                <ControlPointIcon sx={{ width: 14, height: 14 }} />
-                Follow
-              </button>
-            ) : (
-              <div />
-            )}
+            {Auth.userId !== userId ? (
+              !isFollowed ? (
+                <button
+                  type="button"
+                  onClick={followUserHandler}
+                  className={`pr ${style.followButton}`}
+                >
+                  <ControlPointIcon sx={{ width: 14, height: 14 }} />
+                  Follow
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={followUserHandler}
+                  className={`pr ${style.followButton}`}
+                  style={{ background: "#bdbdbd" }}
+                >
+                  <HighlightOffIcon sx={{ width: 14, height: 14 }} />
+                  Following
+                </button>
+              )
+            ) : null}
           </div>
         </div>
       </div>
