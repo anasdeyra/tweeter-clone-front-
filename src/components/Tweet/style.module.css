@@ -12,6 +12,17 @@
     rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
   border-radius: 12px;
 }
+
+.retweetTag {
+  display: grid;
+  grid-auto-flow: column;
+  color: #828282;
+  font-size: 14px;
+  font-family: "Noto Sans";
+  align-content: center;
+  justify-content: start;
+  margin-bottom: -2rem;
+}
 .tweetAuth {
   display: grid;
   grid-template-columns: repeat(2, auto);

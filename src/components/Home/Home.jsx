@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../contextes/AuthContext";
 import { Redirect } from "react-router";
 import CreateTweet from "../Tweet/CreateTweet";
@@ -28,13 +28,20 @@ export default function Home() {
   const [tweetList, setTweetList] = useState([]);
 
   const tweetFeed = tweetList.map((tweet) => (
-    <Tweet auth={Auth} tweet={tweet.tweet} />
+    <Tweet
+      key={Math.random()}
+      auth={Auth}
+      type={tweet.type}
+      tweet={tweet.tweet}
+      status={tweet.status}
+    />
   ));
 
   useEffect(() => {
     getTweetsFeed(Auth?.token).then((res) => {
       setTweetList(res);
     });
+    // eslint-disable-next-line
   }, []);
 
   return (

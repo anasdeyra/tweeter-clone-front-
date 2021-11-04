@@ -50,7 +50,10 @@ function Comment({ details, auth, postId }) {
   );
   return (
     <div className={style.commentContainer}>
-      <Avatar variant="rounded" />
+      <Avatar
+        variant="rounded"
+        src={`https://twetterclone.herokuapp.com/images/${details.userId}`}
+      />
       <div className={style.commentContentContainer}>
         <div className={style.commentContent}>
           <div className={style.commentContentHeader}>
@@ -201,92 +204,109 @@ export default function Tweet(props) {
   ));
 
   return (
-    <div className={style.tweetContainer}>
-      <div className={style.tweetAuth}>
-        <Avatar
-          variant="rounded"
-          src={`https://twetterclone.herokuapp.com/images/${props.img}`}
-        />
-        <div className={style.authStats}>
-          <h4 className={style.authName}>{props.tweet.username}</h4>
-          <p className={style.tweetDate}>{props.tweet.timeCreated}</p>
+    <>
+      {props.type === "retweet" && (
+        <div className={style.retweetTag}>
+          <AutorenewOutlinedIcon />
+          {props.status.substring(0, props.status.length - 10)} Retweeted
         </div>
-      </div>
-      <p className={style.tweetCaption}>{props.tweet.comment}</p>
-      <div>{props.tweet.imageUrl ? tweetImage : ""}</div>
-      <div className={style.tweetStats}>
-        <div className={style.stat}>{props.tweet.comments.length} Comments</div>
-        <div className={style.stat}>{props.tweet.retweets.length} Retweets</div>
-        <div className={style.stat}>{props.tweet.saves.length} Saved</div>
-      </div>
-      <div className={style.tweetActions}>
-        <button className={style.actionButton}>
-          <ModeCommentOutlinedIcon />
-          <p className={style.buttonText}>Comments</p>
-        </button>
-        <button
-          onClick={() => {
-            doAction("retweet", props.tweet._id, props.auth.token).then((res) =>
-              setIsRetweeted(!isRetweeted)
-            );
-          }}
-          style={isRetweeted ? { color: "rgb(var(--g))" } : null}
-          className={style.actionButton}
-        >
-          <AutorenewOutlinedIcon /> <p className={style.buttonText}>Retweet</p>
-        </button>
-        <button
-          onClick={() => {
-            doAction("like", props.tweet._id, props.auth.token).then((res) =>
-              setIsLiked(!isLiked)
-            );
-          }}
-          style={isLiked ? { color: "rgb(var(--r))" } : null}
-          className={style.actionButton}
-        >
-          <FavoriteBorderOutlinedIcon />
-          <p className={style.buttonText}>Like</p>
-        </button>
-        <button
-          onClick={() => {
-            doAction("save", props.tweet._id, props.auth.token).then((res) =>
-              setIsSaved(!isSaved)
-            );
-          }}
-          style={isSaved ? { color: "rgb(var(--b))" } : null}
-          className={style.actionButton}
-        >
-          <BookmarkBorderOutlinedIcon />
-          <p className={style.buttonText}> Bookmark</p>
-        </button>
-      </div>
-      <div className={style.tweetComment}>
-        <Avatar
-          variant="rounded"
-          src={`https://twetterclone.herokuapp.com/images/${props.auth.pp}`}
-        />
-        <form className={style.commentForm} onSubmit={submitHandler}>
-          <input
-            ref={commentInputRef}
-            className={style.commentInput}
-            type="text"
-            placeholder="Tweet your reply"
-          />
-          <span className={style.commentImageUpload}>
-            <input
-              ref={uploadRef}
-              id="file"
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
+      )}
+      <div className={style.tweetContainer}>
+        <div className={style.tweetAuth}>
+          {props.img && (
+            <Avatar
+              variant="rounded"
+              src={`https://twetterclone.herokuapp.com/images/${props.img}`}
             />
-            <InsertPhotoOutlinedIcon onClick={chooseFileHandler} />
-          </span>
-        </form>
+          )}
+          <div className={style.authStats}>
+            <h4 className={style.authName}>{props.tweet.username}</h4>
+            <p className={style.tweetDate}>{props.tweet.timeCreated}</p>
+          </div>
+        </div>
+        <p className={style.tweetCaption}>{props.tweet.comment}</p>
+        <div>{props.tweet.imageUrl ? tweetImage : ""}</div>
+        <div className={style.tweetStats}>
+          <div className={style.stat}>
+            {props.tweet.comments.length} Comments
+          </div>
+          <div className={style.stat}>
+            {props.tweet.retweets.length} Retweets
+          </div>
+          <div className={style.stat}>{props.tweet.saves.length} Saved</div>
+        </div>
+        <div className={style.tweetActions}>
+          <button className={style.actionButton}>
+            <ModeCommentOutlinedIcon />
+            <p className={style.buttonText}>Comments</p>
+          </button>
+          <button
+            onClick={() => {
+              doAction("retweet", props.tweet._id, props.auth.token).then(
+                (res) => setIsRetweeted(!isRetweeted)
+              );
+            }}
+            style={isRetweeted ? { color: "rgb(var(--g))" } : null}
+            className={style.actionButton}
+          >
+            <AutorenewOutlinedIcon />{" "}
+            <p className={style.buttonText}>Retweet</p>
+          </button>
+          <button
+            onClick={() => {
+              doAction("like", props.tweet._id, props.auth.token).then((res) =>
+                setIsLiked(!isLiked)
+              );
+            }}
+            style={isLiked ? { color: "rgb(var(--r))" } : null}
+            className={style.actionButton}
+          >
+            <FavoriteBorderOutlinedIcon />
+            <p className={style.buttonText}>Like</p>
+          </button>
+          <button
+            onClick={() => {
+              doAction("save", props.tweet._id, props.auth.token).then((res) =>
+                setIsSaved(!isSaved)
+              );
+            }}
+            style={isSaved ? { color: "rgb(var(--b))" } : null}
+            className={style.actionButton}
+          >
+            <BookmarkBorderOutlinedIcon />
+            <p className={style.buttonText}> Bookmark</p>
+          </button>
+        </div>
+        <div className={style.tweetComment}>
+          {props.auth.pp && (
+            <Avatar
+              variant="rounded"
+              src={`https://twetterclone.herokuapp.com/images/${props.auth.pp}`}
+            />
+          )}
+          <form className={style.commentForm} onSubmit={submitHandler}>
+            <input
+              ref={commentInputRef}
+              className={style.commentInput}
+              type="text"
+              placeholder="Tweet your reply"
+            />
+            <span className={style.commentImageUpload}>
+              <input
+                ref={uploadRef}
+                id="file"
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+              />
+              <InsertPhotoOutlinedIcon onClick={chooseFileHandler} />
+            </span>
+          </form>
+        </div>
+        {comments.length > 0 ? (
+          <div className={style.commentSection}>{comments}</div>
+        ) : null}
       </div>
-      {comments.length > 0 ? (
-        <div className={style.commentSection}>{comments}</div>
-      ) : null}
-    </div>
+    </>
   );
 }

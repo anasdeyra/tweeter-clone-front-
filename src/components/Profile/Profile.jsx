@@ -86,10 +86,11 @@ export default function Profile(props) {
     // eslint-disable-next-line
     [props.self]
   );
+  // eslint-disable-next-line
   useEffect(parseFollowers, [followers]);
 
   const tweetsFeed = tweetsList.map((tweet) => (
-    <Tweet auth={Auth} key={tweet._id} tweet={tweet} />
+    <Tweet img={photoProf} auth={Auth} key={tweet._id} tweet={tweet} />
   ));
 
   function followUserHandler() {
