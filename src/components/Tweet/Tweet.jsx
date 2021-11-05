@@ -52,7 +52,7 @@ function Comment({ details, auth, postId }) {
     <div className={style.commentContainer}>
       <Avatar
         variant="rounded"
-        src={`https://twetterclone.herokuapp.com/images/${details.userId}`}
+        src={`https://twetterclone.herokuapp.com/${details.pp}`}
       />
       <div className={style.commentContentContainer}>
         <div className={style.commentContent}>
@@ -216,7 +216,7 @@ export default function Tweet(props) {
           {props.img && (
             <Avatar
               variant="rounded"
-              src={`https://twetterclone.herokuapp.com/images/${props.img}`}
+              src={`https://twetterclone.herokuapp.com/${props.img}`}
             />
           )}
           <div className={style.authStats}>
@@ -281,7 +281,7 @@ export default function Tweet(props) {
           {props.auth.pp && (
             <Avatar
               variant="rounded"
-              src={`https://twetterclone.herokuapp.com/images/${props.auth.pp}`}
+              src={`https://twetterclone.herokuapp.com/${props.auth.pp}`}
             />
           )}
           <form className={style.commentForm} onSubmit={submitHandler}>

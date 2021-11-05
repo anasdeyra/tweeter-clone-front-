@@ -116,8 +116,8 @@ export default function Profile(props) {
             className={style.bgv2}
             src={
               photoCover
-                ? `https://twetterclone.herokuapp.com/images/${photoCover}`
-                : ""
+                ? `https://twetterclone.herokuapp.com/${photoCover}`
+                : `${process.env.PUBLIC_URL}/iamges/pc.jpg`
             }
             alt="pc"
           />
@@ -126,8 +126,8 @@ export default function Profile(props) {
               <img
                 src={
                   photoProf
-                    ? `https://twetterclone.herokuapp.com/images/${photoProf}`
-                    : ""
+                    ? `https://twetterclone.herokuapp.com/${photoProf}`
+                    : `${process.env.PUBLIC_URL}/iamges/pp.jpg`
                 }
                 alt="pp"
                 className={style.img}

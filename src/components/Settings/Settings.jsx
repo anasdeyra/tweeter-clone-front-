@@ -128,7 +128,7 @@ export default function Settings() {
         />
         <img
           className={style.pc}
-          src={`https://twetterclone.herokuapp.com/images/${profileCover}`}
+          src={`https://twetterclone.herokuapp.com/${profileCover}`}
           alt=""
           onClick={() => {
             profileCoverRef.current.click();
@@ -136,7 +136,7 @@ export default function Settings() {
         />
         <img
           className={style.pp}
-          src={`https://twetterclone.herokuapp.com/images/${profilePicture}`}
+          src={`https://twetterclone.herokuapp.com/${profilePicture}`}
           alt=""
           onClick={() => {
             profilePictureRef.current.click();

@@ -67,9 +67,11 @@ export default function CreateTweet(props) {
       <h4 className={style.title}>Tweet something</h4>
       <div className={style.createTweetInput}>
         <Avatar
-          src={`https://twetterclone.herokuapp.com/images/${
-            Auth?.user?.pp ? Auth?.user?.pp : `pp.png`
-          }`}
+          src={
+            Auth?.user?.pp
+              ? `https://twetterclone.herokuapp.com/${Auth?.user?.pp}`
+              : `pp.jpg`
+          }
           variant="rounded"
         />
         <input
