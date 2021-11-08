@@ -9,7 +9,7 @@ export function AuthProvider({ children }) {
   };
   useEffect(() => {
     const lsUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (lsUser && Date.now() - lsUser?.loginTime > 0) {
+    if (lsUser && Date.now() - lsUser?.loginTime < 86400000) {
       setCurrentUser(lsUser);
     } else localStorage.removeItem("currentUser");
   }, []);
