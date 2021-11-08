@@ -55,7 +55,7 @@ export function Form({
   if (!Auth.user) {
     return (
       <div className={style.container}>
-        <form className={style.form} onSubmit={submitHandler}>
+        <form className={`bs-2 ${style.form}`} onSubmit={submitHandler}>
           <Image
             className={style.logo}
             src={`${process.env.PUBLIC_URL}/img/tweeter.svg`}
