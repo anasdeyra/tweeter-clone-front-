@@ -58,7 +58,6 @@ export default function Profile(props) {
     try {
       followers.forEach((user) => {
         if (user.userId === Auth.userId) {
-          console.log("g is follwing me");
           setIsFollowed(true);
           throw Error;
         }
@@ -76,7 +75,7 @@ export default function Profile(props) {
         setBio(user.bio);
         setFollowers(user.followers);
         setFollowing(user.following);
-        console.log(user);
+
         setUserId(user._id);
       });
       getUserTweets(id, Auth.token).then((res) =>
@@ -117,7 +116,7 @@ export default function Profile(props) {
             src={
               photoCover
                 ? `https://twetterclone.herokuapp.com/${photoCover}`
-                : `${process.env.PUBLIC_URL}/iamges/pc.jpg`
+                : `${process.env.PUBLIC_URL}/img/pc.jpg`
             }
             alt="pc"
           />
@@ -127,7 +126,7 @@ export default function Profile(props) {
                 src={
                   photoProf
                     ? `https://twetterclone.herokuapp.com/${photoProf}`
-                    : `${process.env.PUBLIC_URL}/iamges/pp.jpg`
+                    : `${process.env.PUBLIC_URL}/img/pp.jpg`
                 }
                 alt="pp"
                 className={style.img}

@@ -1,159 +1,179 @@
-import React, { Component } from "react";
+import React, { useState, useContext } from "react";
 import { signUp, login } from "./auth";
 import style from "./style.module.css";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contextes/AuthContext";
 import { Redirect } from "react-router";
+import { Button, Image } from "@chakra-ui/react";
 
-function Element(props) {
+function Field({ name, type, error }) {
   return (
-    <div className={style.element}>
-      <label htmlFor={props.name}>{props.name}: </label>
-      <input
-        className={style.inputText}
-        type={props.name.startsWith("Password") ? "password" : "text"}
-        name={props.name}
-        id={props.name}
-        placeholder={props.name}
-        onChange={props.changehandler}
-      />
+    <div className={style.field}>
+      <div className={style.fieldContent}>
+        <p className={style.fieldName}>{name}:</p>
+        <input
+          className={style.fieldInput}
+          type={type}
+          name={type}
+          style={error && { border: "2px solid rgb(va(--r))" }}
+          placeholder={name}
+        />
+      </div>
+      {error && <p className={style.fieldError}>{error}</p>}
     </div>
   );
 }
 
-class Form extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,
-    };
+export function Form({
+  submitHandler,
+  buttonText,
+  redirect,
+  fields,
+  loading,
+  errors,
+  loginError,
+  title,
+}) {
+  const Auth = useContext(AuthContext);
 
-    if (this.props.type === "signup") {
-      this.state = {
-        buttonText: "Sign Up",
-        redirectName: "Login",
-        redirectLink: "/login",
-        redirectMessage: "Already have an account? ",
-        details: {
-          Username: "",
-          "E-mail": "",
-          Password: "",
-          "Password Confirmation": "",
-        },
-      };
-    } else if (this.props.type === "login") {
-      this.state = {
-        buttonText: "Login",
-        redirectName: "Sign Up",
-        redirectLink: "/signup",
-        redirectMessage: "don't have an account? ",
-        details: {
-          "E-mail": "",
-          Password: "",
-        },
-      };
-    }
-    this.changehandler = this.changehandler.bind(this);
-  }
-
-  changehandler(e) {
-    this.setState((state) => (state.details[e.target.name] = e.target.value));
-  }
-
-  toggleLoading() {
-    this.setState((state) => (state.loading = !state.loading));
-  }
-
-  render() {
-    let details = [];
-    for (const [key] of Object.entries(this.state.details)) {
-      details.push(
-        <Element name={key} key={key} changehandler={this.changehandler} />
-      );
-    }
-
+  const fieldsList = fields.map((field) => {
+    let error = null;
+    errors.forEach((err) => {
+      if (err.param === field.type) {
+        error = err.msg;
+      }
+    });
     return (
-      <>
-        {this.context.user ? (
-          <Redirect to="/home" />
-        ) : (
-          <form
-            onSubmit={this.props.submitHandler.bind(
-              this,
-              this.state.details,
-              this.toggleLoading.bind(this)
-            )}
-            className={style.form}
-          >
-            <img
-              src={`${process.env.PUBLIC_URL}/img/tweeter-small.svg`}
-              alt="icon"
-            />
-            <h1 className={style.title}>{this.state.buttonText}</h1>
-            <div className={style.details}>{details}</div>
-            <div className={style.footer}>
-              <button
-                disabled={this.state.loading}
-                onClick={this.clickHandler}
-                type="submit"
-                className={`${style.x} pr`}
-              >
-                {this.state.loading ? "Loading..." : this.state.buttonText}
-              </button>
-              <span className={style.muted}>
-                {this.state.redirectMessage}
-                <Link className={style.link} to={this.state.redirectLink}>
-                  {this.state.redirectName}
-                </Link>
-              </span>
-            </div>
-          </form>
-        )}
-      </>
+      <Field
+        key={field.name}
+        name={field.name}
+        type={field.type}
+        error={error}
+      />
     );
+  });
+  if (!Auth.user) {
+    return (
+      <div className={style.container}>
+        <form className={style.form} onSubmit={submitHandler}>
+          <Image
+            className={style.logo}
+            src={`${process.env.PUBLIC_URL}/img/tweeter.svg`}
+          ></Image>
+          <h1 className={style.formTitle}>{title}</h1>
+          <div className={style.fieldsList}>{fieldsList}</div>
+          <div className={style.bottomSection}>
+            <p className={style.muted}>
+              {redirect.text}
+              <Link className={style.redirectLink} to={`/${redirect.link}`}>
+                {redirect.link}
+              </Link>
+            </p>
+            <Button
+              loadingText={buttonText}
+              isLoading={loading}
+              className={`pr ${style.submitButton}`}
+              type="submit"
+            >
+              {buttonText}
+            </Button>
+            {loginError && <p className={style.fieldError}>{loginError}</p>}
+          </div>
+        </form>
+        <p className={style.tradeMark}>
+          © 2021 - Tweeter™. All rights reserved.
+        </p>
+      </div>
+    );
+  } else {
+    return <Redirect to="/home" />;
   }
 }
-Form.contextType = AuthContext;
 
-export class Signup extends Component {
-  constructor(props) {
-    super(props);
-    this.submitHandler = this.submitHandler.bind(this);
-  }
+export function Signup() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const Auth = useContext(AuthContext);
+  const fields = [
+    { name: "Username", type: "username" },
+    { name: "E-mail", type: "email" },
+    { name: "Password", type: "password" },
+    { name: "Password Confirmation", type: "password" },
+  ];
 
-  submitHandler(details, toggleLoading, e) {
+  function submitHandler(e) {
     e.preventDefault();
-    let errors = [];
-
-    if (errors.length === 0) {
-      signUp(
-        details.Username,
-        details["E-mail"],
-        details["Password"],
-        toggleLoading
-      );
+    setIsLoading(true);
+    let data = {};
+    for (let i = 0; i < e.target.length - 1; i++) {
+      data[`${e.target[i].name}`] = e.target[i].value;
     }
+    signUp(data.username, data.email, data.password)
+      .then(() => {
+        login(data.email, data.password).then((res) => {
+          localStorage.setItem("currentUser", JSON.stringify(res.data));
+          Auth.setUser(res.data);
+        });
+      })
+      .catch((e) => {
+        setErrors(e.response.data.data);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
-  render() {
-    return <Form type="signup" submitHandler={this.submitHandler} />;
-  }
+  return (
+    <Form
+      title={"Create an account"}
+      fields={fields}
+      buttonText="Sign up"
+      redirect={{ text: "Already have an account? ", link: "Login" }}
+      submitHandler={submitHandler}
+      loading={isLoading}
+      errors={errors}
+    />
+  );
 }
 
-export class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.submitHandler = this.submitHandler.bind(this);
-  }
+export function Login() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const Auth = useContext(AuthContext);
+  const fields = [
+    { name: "E-mail", type: "email" },
+    { name: "Password", type: "password" },
+  ];
 
-  submitHandler(details, setState, e) {
+  function submitHandler(e) {
     e.preventDefault();
-    const errors = [];
-    if (errors.length === 0) {
-      login(details["E-mail"], details["Password"], this.context, setState);
+    setIsLoading(true);
+    let data = {};
+    for (let i = 0; i < e.target.length - 1; i++) {
+      data[`${e.target[i].name}`] = e.target[i].value;
     }
+    login(data.email, data.password)
+      .then((res) => {
+        localStorage.setItem("currentUser", JSON.stringify(res.data));
+        Auth.setUser(res.data);
+      })
+      .catch((e) => {
+        setError(e?.response?.data?.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
-  render() {
-    return <Form type="login" submitHandler={this.submitHandler} />;
-  }
+
+  return (
+    <Form
+      title={"Login to your account"}
+      fields={fields}
+      buttonText="Login"
+      redirect={{ text: "Don't have an account? ", link: "Signup" }}
+      submitHandler={submitHandler}
+      loading={isLoading}
+      errors={[]}
+      loginError={error}
+    />
+  );
 }
-Login.contextType = AuthContext;

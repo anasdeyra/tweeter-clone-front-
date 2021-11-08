@@ -1,91 +1,84 @@
-.form {
-  width: 55%;
-  margin: auto;
-  display: block;
-  margin-top: 10rem;
-  padding: 1rem;
-  background: rgb(var(--bg));
-}
-
-.element {
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap");
+.container {
+  background: rgb(var(--pr));
+  margin: 0;
+  padding: 0.5rem;
+  height: 100vh;
   display: grid;
-  gap: 1rem 0;
-  font-size: 1.2rem;
-  grid-auto-flow: column;
-  justify-content: space-between;
   align-items: center;
 }
+.form {
+  border-radius: 1rem;
+  background-color: rgb(var(--bg));
+  padding: 1rem;
+  margin: auto;
+  display: grid;
+  gap: 1rem;
+  width: clamp(300px, 100%, 600px);
+}
 
-.inputText {
-  font-size: 1.2rem;
+.logo {
+  margin-bottom: 1rem;
+}
+
+.fieldContent {
+  display: grid;
+}
+
+.fieldInput {
+  font-size: 1rem;
+  padding: 0.5rem;
   border: none;
-  border-bottom: 3px solid rgb(var(--pr));
-  outline: none;
-  background: inherit;
+  border-bottom: 2px solid rgb(var(--pr));
+  outline-color: rgb(var(--pr));
+}
+
+.fieldInput:focus {
+  border: none;
+}
+
+.fieldsList {
+  display: grid;
+  gap: 1rem;
+}
+.fieldError {
+  color: red;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.formTitle {
+  justify-self: center;
+  color: #333;
+  margin: 2.5rem 0;
+}
+
+.fieldsList {
+  display: grid;
 }
 
 .muted {
-  font-size: 0.8rem;
+  font-size: 0.865rem;
   color: rgb(var(--sd-text));
-  font-family: "noto Sans";
 }
-
-.link {
+.redirectLink {
   color: rgb(var(--pr));
 }
 
-.link:active {
-  color: rgb(var(--r));
+.fieldName {
+  margin-bottom: 0.5rem;
 }
 
-.details {
-  margin: auto;
+.bottomSection {
+  margin-top: 2rem;
   display: grid;
-  gap: 0.5rem;
-  grid-template-columns: repeat(auto-fit, 1fr);
-  margin-bottom: 1rem;
+  gap: 1rem;
 }
-.title {
-  margin: 2rem 0;
-  color: rgb(var(--pr));
+.fieldName {
+  font-weight: 600;
 }
-@media (max-width: 540px) {
-  .form {
-    width: 100%;
-    margin-top: 0;
-    height: 100vh;
-  }
-  .title {
-    text-align: center;
-    margin-bottom: 5rem;
-  }
 
-  .element {
-    display: grid;
-    gap: 1.5rem 0;
-    font-size: 1.2rem;
-    grid-auto-flow: row;
-    justify-content: stretch;
-    align-items: stretch;
-  }
-  .footer {
-    justify-self: center;
-  }
-  .x {
-    width: 100%;
-    margin-top: 5rem;
-  }
-
-  .inputText {
-    font-size: 1.2rem;
-    border: none;
-  }
-
-  .inputText:focus {
-    outline: 3px solid rgb(var(--pr));
-    font-size: 1.5rem;
-  }
-  .details {
-    gap: 1.5rem;
-  }
+.tradeMark {
+  color: white;
+  justify-self: center;
+  font-family: "Noto Sans", sans-serif;
 }
