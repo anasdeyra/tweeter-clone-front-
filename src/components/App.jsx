@@ -22,20 +22,28 @@ export default class App extends Component {
               <Router>
                 {Auth.user && <Navbar username={Auth.user.username} />}
 
-                <Switch>
-                  <Route exact path="/login" children={<Login />} />
-                  <Route exact path="/signup" children={<Signup />} />
-                  <Route exact path="/home" children={<Home />} />
-                  <Route exact path="/settings" children={<Settings />} />
-                  <Route exact path="/profile/:id" children={<Profile />} />
-                  <Route
-                    exact
-                    path="/profile"
-                    children={<Profile self={true} />}
-                  />
-                  <Route exact path="/test" children={<div />} />
-                  <Route path="*" children={<Redirect to="/home" />} />
-                </Switch>
+                {Auth.user && (
+                  <Switch>
+                    <Route exact path="/home" children={<Home />} />
+                    <Route exact path="/settings" children={<Settings />} />
+                    <Route exact path="/profile/:id" children={<Profile />} />
+                    <Route
+                      exact
+                      path="/profile"
+                      children={<Profile self={true} />}
+                    />
+                    <Route exact path="/test" children={<div />} />
+                    <Route path="*" children={<Redirect to="/home" />} />
+                  </Switch>
+                )}
+                {!Auth.user && (
+                  <Switch>
+                    <Route exact path="/login" children={<Login />} />
+                    <Route exact path="/signup" children={<Signup />} />
+                    <Route exact path="/test" children={<div />} />
+                    <Route path="*" children={<Redirect to="/login" />} />
+                  </Switch>
+                )}
               </Router>
             );
           }}

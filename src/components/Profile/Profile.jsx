@@ -44,7 +44,7 @@ async function getUserTweets(uid, token) {
 export default function Profile(props) {
   const Auth = useAuth();
   const paramId = useParams().id;
-  const id = paramId ? paramId : Auth.userId;
+  const id = paramId ? paramId : Auth?.userId;
   const [photoCover, setPhotoCover] = useState("");
   const [photoProf, setPhotoProf] = useState("");
   const [username, setUsername] = useState("");
@@ -57,7 +57,7 @@ export default function Profile(props) {
   function parseFollowers() {
     try {
       followers.forEach((user) => {
-        if (user.userId === Auth.userId) {
+        if (user.userId === Auth?.userId) {
           setIsFollowed(true);
           throw Error;
         }
@@ -67,7 +67,7 @@ export default function Profile(props) {
 
   useEffect(
     () => {
-      getUser(Auth.token, id).then((res) => {
+      getUser(Auth?.token, id).then((res) => {
         const user = res.data.user;
         setPhotoCover(user.photoCover);
         setPhotoProf(user.photoProf);
@@ -78,12 +78,12 @@ export default function Profile(props) {
 
         setUserId(user._id);
       });
-      getUserTweets(id, Auth.token).then((res) =>
+      getUserTweets(id, Auth?.token).then((res) =>
         setTweetsList(res?.data?.tweets)
       );
     },
     // eslint-disable-next-line
-    [props.self]
+    [props.self, paramId]
   );
   // eslint-disable-next-line
   useEffect(parseFollowers, [followers]);
@@ -96,7 +96,7 @@ export default function Profile(props) {
     const data = { followingId: id };
     const config = {
       headers: {
-        Authorization: `Bearer ${Auth.token}`,
+        Authorization: `Bearer ${Auth?.token}`,
         "Content-Type": "application/json",
       },
       credentials: "same-origin",
@@ -146,7 +146,7 @@ export default function Profile(props) {
               <p className={style.bio}>{bio}</p>
             </div>
 
-            {Auth.userId !== userId ? (
+            {Auth?.userId !== userId ? (
               !isFollowed ? (
                 <button
                   type="button"

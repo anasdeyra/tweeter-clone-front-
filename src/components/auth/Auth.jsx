@@ -153,8 +153,9 @@ export function Login() {
     }
     login(data.email, data.password)
       .then((res) => {
-        localStorage.setItem("currentUser", JSON.stringify(res.data));
-        Auth.setUser(res.data);
+        const user = { ...res.data, loginTime: Date.now() };
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        Auth.setUser(user);
       })
       .catch((e) => {
         setError(e?.response?.data?.message);

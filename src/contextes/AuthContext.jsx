@@ -9,9 +9,9 @@ export function AuthProvider({ children }) {
   };
   useEffect(() => {
     const lsUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (lsUser) {
+    if (lsUser && Date.now() - lsUser?.loginTime > 0) {
       setCurrentUser(lsUser);
-    }
+    } else localStorage.removeItem("currentUser");
   }, []);
 
   return <AuthContext.Provider value={value} children={children} />;
