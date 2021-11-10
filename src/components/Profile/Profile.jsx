@@ -265,6 +265,7 @@ export default function Profile(props) {
                       setShowFollowing(true);
                     }}
                     className={style.muted}
+style={{cursor: pointer}}
                   >
                     Following
                   </p>
@@ -274,6 +275,7 @@ export default function Profile(props) {
                       setShowFollowers(true);
                     }}
                     className={style.muted}
+style={{cursor: pointer}}
                   >
                     Followers
                   </p>
