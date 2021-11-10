@@ -1,5 +1,6 @@
 import style from "./style.module.css";
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
 import ModeCommentOutlinedIcon from "@mui/icons-material/ModeCommentOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -57,7 +58,9 @@ function Comment({ details, auth, postId }) {
       <div className={style.commentContentContainer}>
         <div className={style.commentContent}>
           <div className={style.commentContentHeader}>
-            <h4 style={{ color: "black" }}>{details.username}</h4>
+            <Link to={`/profile/${details.userId}`}>
+              <h4 style={{ color: "black" }}>{details.username}</h4>
+            </Link>
             <span className={style.commentTime}>{details.time}</span>
           </div>
           {details.content}
@@ -194,7 +197,18 @@ export default function Tweet(props) {
     uploadRef.current.click();
   }
 
-  const comments = props.tweet.comments.map((comment) => (
+  //show only first 3 comments
+  const comments = props.tweet.comments
+    .slice(0, 3)
+    .map((comment) => (
+      <Comment
+        key={comment._id}
+        details={comment}
+        auth={props.auth}
+        postId={props.tweet._id}
+      />
+    ));
+  const commentsList = props.tweet.comments.map((comment) => (
     <Comment
       key={comment._id}
       details={comment}
@@ -202,6 +216,8 @@ export default function Tweet(props) {
       postId={props.tweet._id}
     />
   ));
+
+  const [showComments, setShowComments] = useState(false);
 
   return (
     <>
@@ -216,11 +232,13 @@ export default function Tweet(props) {
           {props.img && (
             <Avatar
               variant="rounded"
-              src={`https://twetterclone.herokuapp.com/${props.img}`}
+              src={`https://twetterclone.herokuapp.com/${props.tweet.pp}`}
             />
           )}
           <div className={style.authStats}>
-            <h4 className={style.authName}>{props.tweet.username}</h4>
+            <Link to={`/profile/${props.tweet.userId}`}>
+              <h4 className={style.authName}>{props.tweet.username}</h4>
+            </Link>
             <p className={style.tweetDate}>{props.tweet.timeCreated}</p>
           </div>
         </div>
@@ -236,7 +254,12 @@ export default function Tweet(props) {
           <div className={style.stat}>{props.tweet.saves.length} Saved</div>
         </div>
         <div className={style.tweetActions}>
-          <button className={style.actionButton}>
+          <button
+            onClick={() => {
+              setShowComments(true);
+            }}
+            className={style.actionButton}
+          >
             <ModeCommentOutlinedIcon />
             <p className={style.buttonText}>Comments</p>
           </button>
@@ -304,8 +327,36 @@ export default function Tweet(props) {
           </form>
         </div>
         {comments.length > 0 ? (
-          <div className={style.commentSection}>{comments}</div>
+          <div className={style.commentSection}>
+            {comments}
+            <p
+              onClick={() => setShowComments(true)}
+              style={{
+                fontWeight: 500,
+                fontSize: "0.856rem",
+                color: "rgb(var(--sd-text))",
+                marginTop: "1rem",
+                marginBottom: "-1rem",
+                cursor: "pointer",
+              }}
+            >
+              {props.tweet.comments.length - 3 > 0 &&
+                `+ ${props.tweet.comments.length - 3} other comments`}
+            </p>
+          </div>
         ) : null}
+        <div
+          className={style.commentsModal}
+          style={{ display: !showComments && "none" }}
+        >
+          <div
+            onClick={() => {
+              setShowComments(false);
+            }}
+            className={style.dummyBackground}
+          />
+          <div className={style.commentsModalContainer}>{commentsList}</div>
+        </div>
       </div>
     </>
   );

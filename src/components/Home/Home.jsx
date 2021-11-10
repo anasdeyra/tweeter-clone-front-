@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../contextes/AuthContext";
-import { Redirect } from "react-router";
 import CreateTweet from "../Tweet/CreateTweet";
 import style from "./style.module.css";
 import Tweet from "../Tweet/Tweet";
@@ -45,17 +44,12 @@ export default function Home() {
   }, []);
 
   return (
-    <>
-      {Auth && (
-        <div className={style.homeContainer}>
-          <div className={style.homeFeed}>
-            <CreateTweet />
-            {tweetFeed}
-          </div>
-          <div className={style.homeSuggestions}></div>
-        </div>
-      )}
-      {!Auth && <Redirect to="login" />}
-    </>
+    <div className={style.homeContainer}>
+      <div className={style.homeFeed}>
+        <CreateTweet />
+        {tweetFeed}
+      </div>
+      <div className={style.homeSuggestions}></div>
+    </div>
   );
 }

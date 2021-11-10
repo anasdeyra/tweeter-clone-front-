@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 export const AuthContext = React.createContext();
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(null);
+  const lsUser = JSON.parse(localStorage.getItem("currentUser"));
+  if (!(lsUser && Date.now() - lsUser?.loginTime < 86400000)) {
+    localStorage.removeItem("currentUser");
+  }
+
+  const [currentUser, setCurrentUser] = useState(lsUser);
   const value = {
     user: currentUser,
     setUser: setCurrentUser,
   };
-  useEffect(() => {
-    const lsUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (lsUser && Date.now() - lsUser?.loginTime < 86400000) {
-      setCurrentUser(lsUser);
-    } else localStorage.removeItem("currentUser");
-  }, []);
 
   return <AuthContext.Provider value={value} children={children} />;
 }

@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import style from "./style.module.css";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import { useAuth } from "../../contextes/AuthContext";
-import { useParams } from "react-router";
+import { AuthContext, useAuth } from "../../contextes/AuthContext";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import Tweet from "../Tweet/Tweet";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-
+import { Avatar } from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
 export async function getUser(token, uid) {
   const config = {
     headers: {
@@ -16,12 +17,135 @@ export async function getUser(token, uid) {
     credentials: "same-origin",
     mode: "no-cors",
   };
-  let response = await axios
-    .get(`https://twetterclone.herokuapp.com/feed/${uid}`, config)
-    .then((res) => {
-      return res;
-    });
+  let response = await axios.get(
+    `https://twetterclone.herokuapp.com/feed/${uid}`,
+    config
+  );
   return response;
+}
+
+export function MiniProfile({
+  isFollowed,
+  name,
+  bio,
+  profilePicture,
+  count,
+  id,
+  followUserHandler,
+}) {
+  const Auth = useContext(AuthContext);
+  const [followed, setFollowed] = useState(isFollowed);
+  return (
+    <div className={style.miniProfileContainer}>
+      <div className={style.miniProfileContent}>
+        <Avatar
+          variant="rounded"
+          src={`https://twetterclone.herokuapp.com/${profilePicture}`}
+        ></Avatar>
+        <div className={style.miniProfileHeader}>
+          <h4 className={style.miniProfileName}>
+            <Link to={`/profile/${id}`}>{name}</Link>
+          </h4>
+          <div className={style.miniProfileCount}>{count}</div>
+        </div>
+        {Auth?.user?.userId !== id ? (
+          !followed ? (
+            <button
+              type="button"
+              style={{ justifySelf: "end" }}
+              onClick={() => {
+                followUserHandler().then(setFollowed(!isFollowed));
+              }}
+              className={`pr ${style.followButton2}`}
+            >
+              <ControlPointIcon sx={{ width: 14, height: 14 }} />
+              Follow
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                followUserHandler().then(setFollowed(!isFollowed));
+              }}
+              className={`pr ${style.followButton2}`}
+              style={{ background: "#bdbdbd" }}
+            >
+              <HighlightOffIcon sx={{ width: 14, height: 14 }} />
+              Following
+            </button>
+          )
+        ) : null}
+      </div>
+      <div className={style.miniProfileBio}>{bio}</div>
+    </div>
+  );
+}
+
+function UsersModal({ header, usersList, show, off }) {
+  const Auth = useContext(AuthContext);
+  const [followersId, setFollowersId] = useState([]);
+  async function followUserHandler(token, id) {
+    const data = { followingId: id };
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      credentials: "same-origin",
+      mode: "no-cors",
+    };
+    let response = await axios.post(
+      `https://twetterclone.herokuapp.com/feed/follow-user`,
+      data,
+      config
+    );
+    return response;
+  }
+  const usersMiniProfiles = usersList.map((user) => {
+    let isFollowed = followersId.includes(user.userId);
+    return (
+      <MiniProfile
+        isFollowed={isFollowed}
+        key={user._id}
+        name={user.username}
+        id={user.userId}
+        followUserHandler={() =>
+          followUserHandler(Auth?.user?.token, user?.userId)
+        }
+      />
+    );
+  });
+  useEffect(() => {
+    getUser(Auth?.user?.token, Auth?.user?.userId).then((res) => {
+      setFollowersId(
+        (state) =>
+          (state = res.data.user.following.map((follower) => follower.userId))
+      );
+    });
+    // eslint-disable-next-line
+  }, []);
+  return (
+    <div className={style.usersModal} style={{ display: !show && "none" }}>
+      <div
+        onClick={() => {
+          off(false);
+        }}
+        className={style.dummyBackground}
+      />
+      <div className={style.usersModalContainer}>
+        <div className={style.userModalHeader}>
+          <h4>{header}</h4>
+          <ClearIcon
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              off(false);
+            }}
+          />
+        </div>
+        <div className={style.usersList}>{usersMiniProfiles}</div>
+      </div>
+    </div>
+  );
 }
 
 async function getUserTweets(uid, token) {
@@ -54,6 +178,9 @@ export default function Profile(props) {
   const [followers, setFollowers] = useState([]);
   const [tweetsList, setTweetsList] = useState([]);
   const [isFollowed, setIsFollowed] = useState(false);
+  const [showFollowers, setShowFollowers] = useState(false);
+  const [showFollowing, setShowFollowing] = useState(false);
+
   function parseFollowers() {
     try {
       followers.forEach((user) => {
@@ -92,7 +219,7 @@ export default function Profile(props) {
     <Tweet img={photoProf} auth={Auth} key={tweet._id} tweet={tweet} />
   ));
 
-  function followUserHandler() {
+  async function followUserHandler() {
     const data = { followingId: id };
     const config = {
       headers: {
@@ -102,9 +229,12 @@ export default function Profile(props) {
       credentials: "same-origin",
       mode: "no-cors",
     };
-    axios
-      .post(`https://twetterclone.herokuapp.com/feed/follow-user`, data, config)
-      .then(setIsFollowed(!isFollowed));
+    let response = await axios.post(
+      `https://twetterclone.herokuapp.com/feed/follow-user`,
+      data,
+      config
+    );
+    return response;
   }
 
   return (
@@ -130,9 +260,23 @@ export default function Profile(props) {
                 <h3 className={style.name}>{username}</h3>
                 <div className={style.stats}>
                   {following.length}
-                  <p className={style.muted}>Following</p>
+                  <p
+                    onClick={() => {
+                      setShowFollowing(true);
+                    }}
+                    className={style.muted}
+                  >
+                    Following
+                  </p>
                   {followers.length}
-                  <p className={style.muted}>Followers</p>
+                  <p
+                    onClick={() => {
+                      setShowFollowers(true);
+                    }}
+                    className={style.muted}
+                  >
+                    Followers
+                  </p>
                 </div>
               </div>
               <p className={style.bio}>{bio}</p>
@@ -142,7 +286,9 @@ export default function Profile(props) {
               !isFollowed ? (
                 <button
                   type="button"
-                  onClick={followUserHandler}
+                  onClick={() => {
+                    followUserHandler().then(setIsFollowed(!isFollowed));
+                  }}
                   className={`pr ${style.followButton}`}
                 >
                   <ControlPointIcon sx={{ width: 14, height: 14 }} />
@@ -151,7 +297,9 @@ export default function Profile(props) {
               ) : (
                 <button
                   type="button"
-                  onClick={followUserHandler}
+                  onClick={() => {
+                    followUserHandler().then(setIsFollowed(!isFollowed));
+                  }}
                   className={`pr ${style.followButton}`}
                   style={{ background: "#bdbdbd" }}
                 >
@@ -181,6 +329,18 @@ export default function Profile(props) {
         </div>
         <div className={style.contentFeed}>{tweetsFeed}</div>
       </div>
+      <UsersModal
+        header={`${Auth?.username} followers`}
+        usersList={followers}
+        show={showFollowers}
+        off={setShowFollowers}
+      />
+      <UsersModal
+        header={`${Auth?.username} is following`}
+        usersList={following}
+        show={showFollowing}
+        off={setShowFollowing}
+      />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,51 +6,66 @@ import {
   Redirect,
 } from "react-router-dom";
 import { Signup, Login } from "./auth/Auth.jsx";
-import { AuthContext, AuthProvider } from "../contextes/AuthContext.jsx";
+import { logout } from "./auth/auth.js";
+import { AuthContext } from "../contextes/AuthContext.jsx";
 import Home from "./Home/Home.jsx";
 import Navbar from "./Navbar/Navbar.jsx";
-import Profile from "./Profile/Profile.jsx";
+import Profile, { MiniProfile } from "./Profile/Profile.jsx";
 import Settings from "./Settings/Settings.jsx";
+import { getUser } from "./Profile/Profile.jsx";
 
-export default class App extends Component {
-  render() {
-    return (
-      <AuthProvider>
-        <AuthContext.Consumer>
-          {(Auth) => {
-            return (
-              <Router>
-                {Auth.user && <Navbar username={Auth.user.username} />}
+function App() {
+  const Auth = useContext(AuthContext);
 
-                <Switch>
-                  {Auth.user && (
-                    <>
-                      <Route exact path="/home" children={<Home />} />
-                      <Route exact path="/settings" children={<Settings />} />
-                      <Route exact path="/profile/:id" children={<Profile />} />
-                      <Route
-                        exact
-                        path="/profile"
-                        children={<Profile self={true} />}
-                      />
-                      <Route path="*" children={<Redirect to="/home" />} />
-                    </>
-                  )}
-                  {!Auth.user && (
-                    <>
-                      <Route exact path="/login" children={<Login />} />
-                      <Route exact path="/signup" children={<Signup />} />
-                      <Route path="*" children={<Redirect to="/login" />} />
-                    </>
-                  )}
+  useEffect(() => {
+    getUser(Auth?.user?.token, Auth?.user?.userId).catch(() => {
+      logout(Auth);
+    });
+    // eslint-disable-next-line
+  }, []);
 
-                  <Route exact path="/test" children={<div />} />
-                </Switch>
-              </Router>
-            );
-          }}
-        </AuthContext.Consumer>
-      </AuthProvider>
-    );
-  }
+  return (
+    <Router>
+      {Auth.user && <Navbar username={Auth.user.username} />}
+
+      {Auth.user && (
+        <Switch>
+          <Route exact path="/home" children={<Home />} />
+          <Route exact path="/settings" children={<Settings />} />
+          <Route exact path="/profile/:id" children={<Profile />} />
+          <Route exact path="/profile" children={<Profile self={true} />} />
+          <Route
+            exact
+            path="/test"
+            children={
+              <MiniProfile
+                name="rjab"
+                count="120k followers"
+                isFollowed={false}
+                followUserHandler={() => {
+                  console.log("test");
+                }}
+                profilePicture="/images/pp.png"
+                bio={"yea boiiiiiii"}
+                id={1}
+              />
+            }
+          />
+          <Route path="*" children={<Redirect to="/home" />} />
+        </Switch>
+      )}
+      {!Auth.user && (
+        <Switch>
+          <Route exact path="/login" children={<Login />} />
+          <Route exact path="/signup" children={<Signup />} />
+          <Route exact path="/test" children={<MiniProfile />} />
+          <Route path="*" children={<Redirect to="/login" />} />
+        </Switch>
+      )}
+
+      <Route exact path="/test" children={<div />} />
+    </Router>
+  );
 }
+
+export default App;
