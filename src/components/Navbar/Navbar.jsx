@@ -12,7 +12,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { logout } from "../auth/auth";
 import { AuthContext } from "../../contextes/AuthContext";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 
 function ClickAwayMask(props) {
   return (
@@ -38,7 +38,7 @@ function Bar(props) {
 export default function Navbar(props) {
   const [optionsTab, toggleOptionstab] = useState(false);
   const history = useHistory();
-  const bars = ["Home", "Explore", "Bookmark"];
+  const bars = ["Home", "Explore", "Bookmarks"];
   const Auth = useContext(AuthContext);
 
   function optionsTabHandler() {
@@ -177,17 +177,17 @@ export default function Navbar(props) {
                     "Explore" === activeBar ? ` ${style.activeBar}` : ""
                   }`}
                 >
-                  <Link to="explorer">
+                  <Link to="/explore">
                     <ExploreIcon color="inherit" />
                   </Link>
                 </div>
                 <div
-                  onClick={() => clickHandler("Bookmark")}
+                  onClick={() => clickHandler("Bookmarks")}
                   className={`${style.mobileBar}${
-                    "Bookmark" === activeBar ? ` ${style.activeBar}` : ""
+                    "Bookmarks" === activeBar ? ` ${style.activeBar}` : ""
                   }`}
                 >
-                  <Link to="bookmark">
+                  <Link to="/bookmarks">
                     <BookmarkIcon color="inherit" />
                   </Link>
                 </div>

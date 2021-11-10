@@ -8,6 +8,8 @@ import Tweet from "../Tweet/Tweet";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { Avatar } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
+import { CircularProgress as Spinner } from "@mui/material";
+
 export async function getUser(token, uid) {
   const config = {
     headers: {
@@ -194,6 +196,8 @@ export default function Profile(props) {
 
   useEffect(
     () => {
+      setShowFollowing(false);
+      setShowFollowers(false);
       getUser(Auth?.token, id).then((res) => {
         const user = res.data.user;
         setPhotoCover(user.photoCover);
@@ -329,7 +333,14 @@ export default function Profile(props) {
             Likes
           </button>
         </div>
-        <div className={style.contentFeed}>{tweetsFeed}</div>
+
+        {tweetsFeed.length > 0 ? (
+          <div className={style.contentFeed}>{tweetsFeed}</div>
+        ) : (
+          <div style={{ justifySelf: "center", margin: "0 auto" }}>
+            <Spinner />
+          </div>
+        )}
       </div>
       <UsersModal
         header={`${Auth?.username} followers`}

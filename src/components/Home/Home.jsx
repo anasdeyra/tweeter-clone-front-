@@ -4,6 +4,7 @@ import CreateTweet from "../Tweet/CreateTweet";
 import style from "./style.module.css";
 import Tweet from "../Tweet/Tweet";
 import axios from "axios";
+import { CircularProgress as Spinner } from "@mui/material";
 
 async function getTweetsFeed(token) {
   const config = {
@@ -47,7 +48,13 @@ export default function Home() {
     <div className={style.homeContainer}>
       <div className={style.homeFeed}>
         <CreateTweet />
-        {tweetFeed}
+        {tweetFeed.length > 0 ? (
+          tweetFeed
+        ) : (
+          <div style={{ margin: "auto" }}>
+            <Spinner />
+          </div>
+        )}
       </div>
       <div className={style.homeSuggestions}></div>
     </div>

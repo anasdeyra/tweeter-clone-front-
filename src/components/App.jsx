@@ -13,6 +13,8 @@ import Navbar from "./Navbar/Navbar.jsx";
 import Profile, { MiniProfile } from "./Profile/Profile.jsx";
 import Settings from "./Settings/Settings.jsx";
 import { getUser } from "./Profile/Profile.jsx";
+import Bookmarks from "./Bookmarks/Bookmarks.jsx";
+import Explore from "./Explore/Explore.jsx";
 
 function App() {
   const Auth = useContext(AuthContext);
@@ -34,6 +36,8 @@ function App() {
           <Route exact path="/settings" children={<Settings />} />
           <Route exact path="/profile/:id" children={<Profile />} />
           <Route exact path="/profile" children={<Profile self={true} />} />
+          <Route exact path="/bookmarks" children={<Bookmarks />} />
+          <Route exact path="/explore" children={<Explore />} />
           <Route
             exact
             path="/test"
