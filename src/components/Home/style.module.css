@@ -13,6 +13,16 @@
   gap: 2rem;
 }
 
+.noTweets {
+  font-family: "Noto Sans";
+  background-color: #e0e0e0;
+  padding: 1rem;
+  border-radius: 1rem;
+  text-align: center;
+  margin: auto;
+  font-weight: 600;
+}
+
 @media (max-width: 980px) {
   .homeContainer {
     grid-template-columns: 1fr;

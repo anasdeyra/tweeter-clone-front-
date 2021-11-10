@@ -182,6 +182,7 @@ export default function Profile(props) {
   const [isFollowed, setIsFollowed] = useState(false);
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
+  const [isLoading, setIsloading] = useState(false);
 
   function parseFollowers() {
     try {
@@ -196,6 +197,7 @@ export default function Profile(props) {
 
   useEffect(
     () => {
+      setIsloading(true);
       setShowFollowing(false);
       setShowFollowers(false);
       getUser(Auth?.token, id).then((res) => {
@@ -209,9 +211,10 @@ export default function Profile(props) {
 
         setUserId(user._id);
       });
-      getUserTweets(id, Auth?.token).then((res) =>
-        setTweetsList(res?.data?.tweets)
-      );
+      getUserTweets(id, Auth?.token).then((res) => {
+        setTweetsList(res?.data?.tweets);
+        setIsloading(false);
+      });
     },
     // eslint-disable-next-line
     [props.self, paramId]
@@ -334,12 +337,18 @@ export default function Profile(props) {
           </button>
         </div>
 
-        {tweetsFeed.length > 0 ? (
-          <div className={style.contentFeed}>{tweetsFeed}</div>
-        ) : (
+        {isLoading ? (
           <div style={{ justifySelf: "center", margin: "0 auto" }}>
             <Spinner />
           </div>
+        ) : (
+          <>
+            {tweetsFeed.length > 0 ? (
+              <div className={style.contentFeed}>{tweetsFeed}</div>
+            ) : (
+              <div className={style.noTweets}>There are no tweets.</div>
+            )}
+          </>
         )}
       </div>
       <UsersModal

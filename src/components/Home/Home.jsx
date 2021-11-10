@@ -26,6 +26,7 @@ async function getTweetsFeed(token) {
 export default function Home() {
   const Auth = useAuth();
   const [tweetList, setTweetList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const tweetFeed = tweetList.map((tweet) => (
     <Tweet
@@ -38,9 +39,14 @@ export default function Home() {
   ));
 
   useEffect(() => {
-    getTweetsFeed(Auth?.token).then((res) => {
-      setTweetList(res);
-    });
+    setIsLoading(true);
+    getTweetsFeed(Auth?.token)
+      .then((res) => {
+        setTweetList(res);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
     // eslint-disable-next-line
   }, []);
 
@@ -48,12 +54,18 @@ export default function Home() {
     <div className={style.homeContainer}>
       <div className={style.homeFeed}>
         <CreateTweet />
-        {tweetFeed.length > 0 ? (
-          tweetFeed
-        ) : (
+        {isLoading ? (
           <div style={{ margin: "auto" }}>
             <Spinner />
           </div>
+        ) : (
+          <>
+            {tweetFeed.length > 0 ? (
+              tweetFeed
+            ) : (
+              <div className={style.noTweets}>There are no tweets.</div>
+            )}
+          </>
         )}
       </div>
       <div className={style.homeSuggestions}></div>

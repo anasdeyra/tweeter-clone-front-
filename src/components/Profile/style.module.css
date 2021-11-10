@@ -291,6 +291,16 @@
   gap: 1rem;
 }
 
+.noTweets {
+  font-family: "Noto Sans";
+  background-color: #e0e0e0;
+  padding: 1rem;
+  border-radius: 1rem;
+  text-align: center;
+  margin: auto;
+  font-weight: 600;
+}
+
 .miniProfileContainer {
   padding-top: 1rem;
   border-top: 1px solid #e0e0e0;

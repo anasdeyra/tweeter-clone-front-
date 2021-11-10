@@ -1,0 +1,21 @@
+.noTweets {
+  font-family: "Noto Sans";
+  background-color: #e0e0e0;
+  padding: 1rem;
+  border-radius: 1rem;
+  text-align: center;
+  margin: auto;
+  font-weight: 600;
+}
+
+.BookmarksContainer {
+  margin: auto;
+  width: clamp(300px, 95%, 800px);
+  padding: 4rem;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+.BookmarksContainer > div {
+  margin: 1rem;
+}
