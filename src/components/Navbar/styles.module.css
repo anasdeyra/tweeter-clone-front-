@@ -181,6 +181,7 @@
   grid-template-rows: repeat(3, 1fr);
   height: 90%;
 }
+
 .option {
   display: grid;
   align-content: center;
