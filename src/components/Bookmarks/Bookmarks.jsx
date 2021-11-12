@@ -28,7 +28,11 @@ export default function Bookmarks() {
   const Auth = useContext(AuthContext);
 
   const bookmarksFeed = bookmarkList.map((tweet) => (
+<<<<<<< HEAD
     <Tweet style={{ margin: "auto" }} tweet={tweet} auth={Auth?.user} />
+=======
+    <Tweet style={{margin:"auto"}} tweet={tweet} auth={Auth?.user} />
+>>>>>>> be3ae834cae8164e1438b4ad093ac8ac20775f35
   ));
   useEffect(() => {
     setIsLoading(true);
