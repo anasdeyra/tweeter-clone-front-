@@ -301,12 +301,11 @@ export default function Tweet(props) {
           </button>
         </div>
         <div className={style.tweetComment}>
-          {props.auth.pp && (
-            <Avatar
-              variant="rounded"
-              src={`https://twetterclone.herokuapp.com/${props.auth.pp}`}
-            />
-          )}
+          <Avatar
+            variant="rounded"
+            src={`https://twetterclone.herokuapp.com/${props.auth.pp}`}
+          />
+
           <form className={style.commentForm} onSubmit={submitHandler}>
             <input
               ref={commentInputRef}

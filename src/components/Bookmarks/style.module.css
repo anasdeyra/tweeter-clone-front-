@@ -10,12 +10,12 @@
 
 .BookmarksContainer {
   margin: auto;
-  width: clamp(300px, 95%, 800px);
-  padding: 4rem;
+  padding-top: 4rem;
   overflow-y: scroll;
   height: 100vh;
+  width: clamp(300px, 95%, 750px);
 }
 
 .BookmarksContainer > div {
-  margin: 1rem;
+  margin-bottom: 1rem;
 }

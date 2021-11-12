@@ -16,6 +16,7 @@
 
 .feedContainer {
   display: grid;
+  overflow-y: scroll;
   gap: 1rem;
 }
 
@@ -45,6 +46,7 @@
   width: 95vw;
   margin: auto;
   gap: 1rem;
+  max-height: 100vh;
 }
 
 .miniProfileContainer {

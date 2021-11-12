@@ -5,6 +5,7 @@ import Tweet from "../Tweet/Tweet.jsx";
 import { MiniProfile } from "../Profile/Profile.jsx";
 import { CircularProgress as Spinner } from "@mui/material";
 import { AuthContext } from "../../contextes/AuthContext";
+import { followUserHandler, getUser } from "../Profile/Profile.jsx";
 
 async function getTweets(token, type = "Top") {
   let endpoint = "Top";
@@ -46,6 +47,7 @@ function FilterContent({ type, changeFilter }) {
     <div className={style.filterContainer}>
       {typesList.map((cat) => (
         <div
+          key={cat}
           onClick={() => {
             changeFilter(cat);
           }}
@@ -62,24 +64,32 @@ export default function Explore() {
   const [filter, setFilter] = useState("Top");
   const [feedList, setFeedList] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [followersId, setFollowersId] = useState([]);
   const Auth = useContext(AuthContext);
   const filtredFeed = feedList?.posts
     ? feedList?.posts?.map((tweet) => (
         <Tweet auth={Auth?.user} key={tweet._id} tweet={tweet} />
       ))
-    : feedList?.users?.map((tweet) => (
-        <div className={style.miniProfileContainer}>
-          <MiniProfile
-            style={{ width: "100%" }}
-            key={tweet._id}
-            id={tweet._id}
-            name={tweet.username}
-            bio={tweet.bio}
-            profilePicture={tweet.photoProf}
-            count={`${tweet.followers?.length} followers`}
-          />
-        </div>
-      ));
+    : feedList?.users?.map((user) => {
+        let isFollowed = followersId.includes(user._id);
+        return (
+          <div className={style.miniProfileContainer}>
+            <MiniProfile
+              style={{ width: "100%" }}
+              key={user._id}
+              id={user._id}
+              name={user.username}
+              bio={user.bio}
+              profilePicture={user.photoProf}
+              count={`${user.followers?.length} followers`}
+              followUserHandler={() =>
+                followUserHandler(Auth?.user?.token, user?._id)
+              }
+              isFollowed={isFollowed}
+            />
+          </div>
+        );
+      });
   useEffect(() => {
     setIsLoading(true);
     getTweets(Auth?.user?.token, filter)
@@ -90,6 +100,14 @@ export default function Explore() {
         setIsLoading(false);
       });
   }, [filter]);
+  useEffect(() => {
+    getUser(Auth?.user?.token, Auth?.user?.userId).then((res) => {
+      setFollowersId(
+        res.data.user.following.map((follower) => follower.userId)
+      );
+    });
+    // eslint-disable-next-line
+  }, []);
   return (
     <div className={style.exploreContainer}>
       <FilterContent type={filter} changeFilter={setFilter} />

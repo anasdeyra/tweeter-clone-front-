@@ -9,7 +9,23 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { Avatar } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import { CircularProgress as Spinner } from "@mui/material";
-
+export async function followUserHandler(token, id) {
+  const data = { followingId: id };
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    credentials: "same-origin",
+    mode: "no-cors",
+  };
+  let response = await axios.post(
+    `https://twetterclone.herokuapp.com/feed/follow-user`,
+    data,
+    config
+  );
+  return response;
+}
 export async function getUser(token, uid) {
   const config = {
     headers: {
@@ -37,6 +53,7 @@ export function MiniProfile({
 }) {
   const Auth = useContext(AuthContext);
   const [followed, setFollowed] = useState(isFollowed);
+  const [isLoading, setIsloading] = useState(false);
   return (
     <div className={style.miniProfileContainer}>
       <div className={style.miniProfileContent}>
@@ -53,10 +70,18 @@ export function MiniProfile({
         {Auth?.user?.userId !== id ? (
           !followed ? (
             <button
+              disabled={isLoading}
               type="button"
               style={{ justifySelf: "end" }}
               onClick={() => {
-                followUserHandler().then(setFollowed(!isFollowed));
+                setIsloading(true);
+                followUserHandler()
+                  .then(() => {
+                    setFollowed(!followed);
+                  })
+                  .finally(() => {
+                    setIsloading(false);
+                  });
               }}
               className={`pr ${style.followButton2}`}
             >
@@ -65,9 +90,17 @@ export function MiniProfile({
             </button>
           ) : (
             <button
+              disabled={isLoading}
               type="button"
               onClick={() => {
-                followUserHandler().then(setFollowed(!isFollowed));
+                setIsloading(true);
+                followUserHandler()
+                  .then(() => {
+                    setFollowed(!followed);
+                  })
+                  .finally(() => {
+                    setIsloading(false);
+                  });
               }}
               className={`pr ${style.followButton2}`}
               style={{ background: "#bdbdbd" }}
@@ -86,23 +119,7 @@ export function MiniProfile({
 function UsersModal({ header, usersList, show, off }) {
   const Auth = useContext(AuthContext);
   const [followersId, setFollowersId] = useState([]);
-  async function followUserHandler(token, id) {
-    const data = { followingId: id };
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      credentials: "same-origin",
-      mode: "no-cors",
-    };
-    let response = await axios.post(
-      `https://twetterclone.herokuapp.com/feed/follow-user`,
-      data,
-      config
-    );
-    return response;
-  }
+
   const usersMiniProfiles = usersList.map((user) => {
     let isFollowed = followersId.includes(user.userId);
     return (
@@ -120,8 +137,7 @@ function UsersModal({ header, usersList, show, off }) {
   useEffect(() => {
     getUser(Auth?.user?.token, Auth?.user?.userId).then((res) => {
       setFollowersId(
-        (state) =>
-          (state = res.data.user.following.map((follower) => follower.userId))
+        res.data.user.following.map((follower) => follower.userId)
       );
     });
     // eslint-disable-next-line
