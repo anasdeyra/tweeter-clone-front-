@@ -99,6 +99,7 @@ export default function Explore() {
       .finally(() => {
         setIsLoading(false);
       });
+    // eslint-disable-next-line
   }, [filter]);
   useEffect(() => {
     getUser(Auth?.user?.token, Auth?.user?.userId).then((res) => {

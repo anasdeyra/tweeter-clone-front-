@@ -266,13 +266,21 @@ export default function Profile(props) {
         <div className={style.backgroundImage}>
           <img
             className={style.bgv2}
-            src={`https://twetterclone.herokuapp.com/${photoCover}`}
+            src={
+              photoCover
+                ? `https://twetterclone.herokuapp.com/${photoCover}`
+                : `${process.env.PUBLIC_URL}/img/default pc.jpg`
+            }
             alt="pc"
           />
           <div className={style.profileInfo}>
             <div className={style.profileImage}>
               <img
-                src={`https://twetterclone.herokuapp.com/${photoProf}`}
+                src={
+                  photoProf
+                    ? `https://twetterclone.herokuapp.com/${photoProf}`
+                    : `${process.env.PUBLIC_URL}/img/default pp.jpg`
+                }
                 alt="pp"
                 className={style.img}
               />

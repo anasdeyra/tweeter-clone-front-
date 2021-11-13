@@ -6,32 +6,32 @@ import { Button } from "@chakra-ui/react";
 import Formdata from "form-data";
 import { useHistory } from "react-router-dom";
 
-async function submitUpdate(token, data) {
+async function submitUpdate(token, { pc = null, pp = null, data = null }) {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
+      "Content-Type": "application/json, multipart/form-data",
     },
     credentials: "same-origin",
     mode: "no-cors",
   };
-  let error = null;
-  try {
-    let response = await axios
-      .put(`https://twetterclone.herokuapp.com/edit/user-info`, data, config)
-      .then((res) => {
-        console.log(res);
-        return res;
-      })
-      .catch((err) => (error = err));
-    if (!error) {
-      return response;
-    } else {
-      console.log({ error });
-      throw error;
-    }
-  } catch (error) {
-    throw error;
+
+  if (data) {
+    await axios.put(
+      `https://twetterclone.herokuapp.com/edit/user-info`,
+      data,
+      config
+    );
+  }
+  if (pp) {
+    let data = new Formdata();
+    data.set("image", pp);
+    await axios.put(`https://twetterclone.herokuapp.com/edit/pp`, data, config);
+  }
+  if (pc) {
+    let data = new Formdata();
+    data.set("image", pc);
+    await axios.put(`https://twetterclone.herokuapp.com/edit/pc`, data, config);
   }
 }
 
@@ -48,7 +48,6 @@ async function getUserDetails(id, token) {
 }
 
 export default function Settings() {
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -82,6 +81,14 @@ export default function Settings() {
   }
 
   function submitHandler(e) {
+    let pp, pc;
+    if (profilePictureRef.current.files.length > 0) {
+      pp = profilePictureRef.current.files[0];
+    }
+    if (profileCoverRef.current.files.length > 0) {
+      pc = profileCoverRef.current.files[0];
+    }
+
     e.preventDefault();
     setIsLoading(true);
     let data = new Formdata();
@@ -95,14 +102,13 @@ export default function Settings() {
       data.set("password", password);
     }
 
-    submitUpdate(auth.token, data)
+    submitUpdate(auth.token, { data, pp, pc })
       .then((res) => {
         setIsLoading(false);
         history.push("/profile");
       })
       .catch((err) => {
         setIsLoading(false);
-        setError(JSON.stringify(err?.response?.data?.data[0]?.msg));
       });
   }
   //eslint-disable-next-line
@@ -128,16 +134,24 @@ export default function Settings() {
         />
         <img
           className={style.pc}
-          src={`https://twetterclone.herokuapp.com/${profileCover}`}
-          alt=""
+          src={
+            profileCover
+              ? `https://twetterclone.herokuapp.com/${profileCover}`
+              : `${process.env.PUBLIC_URL}/img/default pc.jpg`
+          }
+          alt="pc"
           onClick={() => {
             profileCoverRef.current.click();
           }}
         />
         <img
           className={style.pp}
-          src={`https://twetterclone.herokuapp.com/${profilePicture}`}
-          alt=""
+          src={
+            profilePicture
+              ? `https://twetterclone.herokuapp.com/${profilePicture}`
+              : `${process.env.PUBLIC_URL}/img/default pp.jpg`
+          }
+          alt="pp"
           onClick={() => {
             profilePictureRef.current.click();
           }}
@@ -165,7 +179,6 @@ export default function Settings() {
         >
           copy token
         </button>
-        <p className={style.error}>{error}</p>
         <div className={style.textInputList}>
           <label htmlFor="username">Username: </label>
           <input
