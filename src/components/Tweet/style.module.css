@@ -43,7 +43,6 @@
 }
 
 .tweetCaption {
-  font-family: Noto Sans;
   font-weight: 400;
 }
 
@@ -323,12 +322,15 @@
   top: 0;
   left: 0;
   animation: modal 0.25s ease-out;
+  z-index: 10;
 }
 
 .commentsModalContainer {
   position: relative;
   margin: auto;
   display: grid;
+  gap: 1rem;
+  align-content: flex-start;
   width: clamp(300px, 95%, 600px);
   background: rgb(var(--bg));
   border-radius: 1rem;

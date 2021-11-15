@@ -7,12 +7,14 @@ import axios from "axios";
 import { AuthContext } from "../../contextes/AuthContext";
 import FormData from "form-data";
 import PublicIcon from "@mui/icons-material/Public";
+import { Button } from "@chakra-ui/react";
 
 export default function CreateTweet(props) {
   const Auth = useContext(AuthContext);
   const [caption, setCaption] = useState("");
   const [isPublic, toggleIsPublic] = useState(true);
   const [optionGroup, toggleOptionGroup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const uploadRef = useRef();
   const textRef = useRef();
 
@@ -21,9 +23,10 @@ export default function CreateTweet(props) {
   }
 
   function submitHandler(e) {
+    setIsLoading(true);
     e.preventDefault();
     let data = new FormData();
-    data.set("audience", isPublic);
+    data.set("privacy", !isPublic);
     data.set("comment", caption);
     if (uploadRef.current.files.length > 0) {
       const img = uploadRef.current.files[0];
@@ -43,12 +46,13 @@ export default function CreateTweet(props) {
         data,
         config
       )
-      .then()
-      .catch((err) => {
-        console.log(err);
+      .then(() => {
+        textRef.current.value = "";
+        setCaption("");
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-    textRef.current.value = "";
-    setCaption("");
   }
 
   function chooseFileHandler() {
@@ -113,6 +117,7 @@ export default function CreateTweet(props) {
               type="button"
               onClick={() => {
                 publicHandler(true);
+                toggleOptionGroup(false);
               }}
               className={style.option}
             >
@@ -122,6 +127,7 @@ export default function CreateTweet(props) {
               type="button"
               onClick={() => {
                 publicHandler(false);
+                toggleOptionGroup(false);
               }}
               className={style.option}
             >
@@ -130,9 +136,15 @@ export default function CreateTweet(props) {
           </div>
         </span>
 
-        <button type="submit" className="pr">
+        <Button
+          isLoading={isLoading}
+          loadingText="tweeting"
+          disabled={isLoading}
+          type="submit"
+          className="pr"
+        >
           Tweet
-        </button>
+        </Button>
       </div>
     </form>
   );

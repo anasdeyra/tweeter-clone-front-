@@ -66,3 +66,27 @@
     width: 80vw;
   }
 }
+
+.searchBarContainer {
+  display: grid;
+  width: 100%;
+  background: rgb(var(--bg));
+  grid-template-columns: auto 1fr auto;
+  border-radius: 8px;
+  padding: 0.5rem;
+  gap: 0.5rem;
+  color: #bdbdbd;
+}
+
+.searchInput {
+  outline-color: rgb(var(--pr));
+  padding: 0.5rem;
+  border: none;
+  font-size: 1rem;
+  font-family: "poppins";
+}
+
+.mainMenu {
+  display: grid;
+  gap: 1rem;
+}

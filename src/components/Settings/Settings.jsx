@@ -16,13 +16,8 @@ async function submitUpdate(token, { pc = null, pp = null, data = null }) {
     mode: "no-cors",
   };
 
-  if (data) {
-    await axios.put(
-      `https://twetterclone.herokuapp.com/edit/user-info`,
-      data,
-      config
-    );
-  }
+  let response;
+
   if (pp) {
     let data = new Formdata();
     data.set("image", pp);
@@ -33,6 +28,14 @@ async function submitUpdate(token, { pc = null, pp = null, data = null }) {
     data.set("image", pc);
     await axios.put(`https://twetterclone.herokuapp.com/edit/pc`, data, config);
   }
+  if (data) {
+    response = await axios.put(
+      `https://twetterclone.herokuapp.com/edit/user-info`,
+      data,
+      config
+    );
+  }
+  return response;
 }
 
 async function getUserDetails(id, token) {
@@ -104,10 +107,16 @@ export default function Settings() {
 
     submitUpdate(auth.token, { data, pp, pc })
       .then((res) => {
-        setIsLoading(false);
-        history.push("/profile");
+        getUserDetails(auth.userId, auth.token).then((res) => {
+          let lsUser = JSON.parse(localStorage.getItem("currentUser"));
+          lsUser.username = res.data.user.username;
+          lsUser.pp = res.data.user.pp;
+          localStorage.setItem("currentUser", JSON.stringify(lsUser));
+
+          history.push("/profile");
+        });
       })
-      .catch((err) => {
+      .finally(() => {
         setIsLoading(false);
       });
   }
@@ -139,7 +148,7 @@ export default function Settings() {
               ? `https://twetterclone.herokuapp.com/${profileCover}`
               : `${process.env.PUBLIC_URL}/img/default pc.jpg`
           }
-          alt="pc"
+          alt="Profile background"
           onClick={() => {
             profileCoverRef.current.click();
           }}
@@ -151,7 +160,7 @@ export default function Settings() {
               ? `https://twetterclone.herokuapp.com/${profilePicture}`
               : `${process.env.PUBLIC_URL}/img/default pp.jpg`
           }
-          alt="pp"
+          alt="Profile pic"
           onClick={() => {
             profilePictureRef.current.click();
           }}

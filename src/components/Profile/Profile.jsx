@@ -368,7 +368,7 @@ export default function Profile(props) {
         ) : (
           <>
             {tweetsFeed.length > 0 ? (
-              <div className={style.contentFeed}>{tweetsFeed}</div>
+              <div className={style.contentFeed}>{tweetsFeed.reverse()}</div>
             ) : (
               <div className={style.noTweets}>There are no tweets.</div>
             )}

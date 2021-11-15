@@ -12,6 +12,7 @@ import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined";
 
 function Comment({ details, auth, postId }) {
   const [isLiked, setIsLiked] = useState(false);
+
   function parseCommentLikes() {
     details.likes.forEach((like) => {
       if (like.userId === auth.userId) {
@@ -76,14 +77,16 @@ function Comment({ details, auth, postId }) {
           <span
             style={{ color: isLiked ? "rgb(var(--r))" : "" }}
             onClick={() => {
-              likeComment().then(setIsLiked(!isLiked));
+              likeComment().then(() => {
+                setIsLiked(!isLiked);
+              });
             }}
             className={style.commentLike}
           >
             <FavoriteBorderOutlinedIcon fontSize="1rem" />  Like
           </span>
           <span style={{ display: "inline-flex" }} className={style.span}>
-            {details.likes.length} likes
+            {isLiked ? details.likes.length + 1 : details.likes.length} likes
           </span>
         </div>
       </div>
@@ -144,6 +147,7 @@ async function doAction(action, postId, token) {
 }
 
 export default function Tweet(props) {
+  const [retweetAdds, setRetweetAdds] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   function parseLikes() {
     try {
@@ -229,12 +233,11 @@ export default function Tweet(props) {
       )}
       <div className={style.tweetContainer}>
         <div className={style.tweetAuth}>
-          {props.img && (
-            <Avatar
-              variant="rounded"
-              src={`https://twetterclone.herokuapp.com/${props.tweet.pp}`}
-            />
-          )}
+          <Avatar
+            variant="rounded"
+            src={`https://twetterclone.herokuapp.com/${props.tweet.pp}`}
+          />
+
           <div className={style.authStats}>
             <Link to={`/profile/${props.tweet.userId}`}>
               <h4 className={style.authName}>{props.tweet.username}</h4>
@@ -249,9 +252,12 @@ export default function Tweet(props) {
             {props.tweet.comments.length} Comments
           </div>
           <div className={style.stat}>
-            {props.tweet.retweets.length} Retweets
+            {retweetAdds + props.tweet.retweets.length} Retweets
           </div>
-          <div className={style.stat}>{props.tweet.saves.length} Saved</div>
+          <div className={style.stat}>
+            {isSaved ? 1 + props.tweet.saves.length : props.tweet.saves.length}{" "}
+            Saved
+          </div>
         </div>
         <div className={style.tweetActions}>
           <button
@@ -266,7 +272,10 @@ export default function Tweet(props) {
           <button
             onClick={() => {
               doAction("retweet", props.tweet._id, props.auth.token).then(
-                (res) => setIsRetweeted(!isRetweeted)
+                (res) => {
+                  setIsRetweeted(!isRetweeted);
+                  setRetweetAdds(retweetAdds + 1);
+                }
               );
             }}
             style={isRetweeted ? { color: "rgb(var(--g))" } : null}
@@ -289,8 +298,10 @@ export default function Tweet(props) {
           </button>
           <button
             onClick={() => {
-              doAction("save", props.tweet._id, props.auth.token).then((res) =>
-                setIsSaved(!isSaved)
+              doAction("save", props.tweet._id, props.auth.token).then(
+                (res) => {
+                  setIsSaved(!isSaved);
+                }
               );
             }}
             style={isSaved ? { color: "rgb(var(--b))" } : null}
