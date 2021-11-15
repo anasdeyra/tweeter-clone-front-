@@ -149,6 +149,7 @@ async function doAction(action, postId, token) {
 export default function Tweet(props) {
   const [retweetAdds, setRetweetAdds] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
+  const [commentsList, setCommentsList] = useState(props.tweet.comments);
   function parseLikes() {
     try {
       props.tweet.likes.forEach((like) => {
@@ -188,7 +189,11 @@ export default function Tweet(props) {
         const img = uploadRef.current.files[0];
         data.set("image", img);
       }
-      submitComment(data, props.auth.token);
+      submitComment(data, props.auth.token).then((res) => {
+        setCommentsList((state) => {
+          state.push(res.data.comment);
+        });
+      });
     }
   }
 
@@ -202,7 +207,7 @@ export default function Tweet(props) {
   }
 
   //show only first 3 comments
-  const comments = props.tweet.comments
+  const comments = commentsList
     .slice(0, 3)
     .map((comment) => (
       <Comment
@@ -212,7 +217,7 @@ export default function Tweet(props) {
         postId={props.tweet._id}
       />
     ));
-  const commentsList = props.tweet.comments.map((comment) => (
+  const commentsFeed = props.tweet.comments.map((comment) => (
     <Comment
       key={comment._id}
       details={comment}
@@ -365,7 +370,7 @@ export default function Tweet(props) {
             }}
             className={style.dummyBackground}
           />
-          <div className={style.commentsModalContainer}>{commentsList}</div>
+          <div className={style.commentsModalContainer}>{commentsFeed}</div>
         </div>
       </div>
     </>
