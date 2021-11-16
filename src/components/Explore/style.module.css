@@ -88,5 +88,5 @@
 .mainMenu {
   display: grid;
   gap: 1rem;
-  align-items: flex-start;
+  align-content: flex-start;
 }

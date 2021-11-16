@@ -26,7 +26,7 @@ async function submitUpdate(token, { pc = null, pp = null, data = null }) {
   if (pc) {
     let data = new Formdata();
     data.set("image", pc);
-    await axios.put(`https://twetterclone.herokuapp.com/edit/pc`, data, config);
+    await axios.put(`https://twetterclone.herokuapp.com/edit/cp`, data, config);
   }
   if (data) {
     response = await axios.put(
@@ -110,7 +110,7 @@ export default function Settings() {
         getUserDetails(auth.userId, auth.token).then((res) => {
           let lsUser = JSON.parse(localStorage.getItem("currentUser"));
           lsUser.username = res.data.user.username;
-          lsUser.pp = res.data.user.pp;
+          lsUser.pp = res.data.user.photoProf;
           localStorage.setItem("currentUser", JSON.stringify(lsUser));
 
           history.push("/profile");
