@@ -50,6 +50,7 @@ export function MiniProfile({
   count,
   id,
   followUserHandler,
+  profileBackground,
 }) {
   const Auth = useContext(AuthContext);
   const [followed, setFollowed] = useState(isFollowed);
@@ -112,6 +113,16 @@ export function MiniProfile({
         ) : null}
       </div>
       <div className={style.miniProfileBio}>{bio}</div>
+
+      <img
+        className={style.miniProfileBackground}
+        src={
+          profileBackground
+            ? `https://twetterclone.herokuapp.com/${profileBackground}`
+            : `${process.env.PUBLIC_URL}/img/default pc.jpg`
+        }
+        alt="Profile background"
+      />
     </div>
   );
 }

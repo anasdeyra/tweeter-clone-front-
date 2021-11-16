@@ -108,6 +108,7 @@ function SearchBar(params) {
       />
 
       <Button
+        isLoading={isLoading}
         className={`pr`}
         onClick={searchHandler}
         loadingText="Searching"
@@ -128,14 +129,15 @@ export default function Explore() {
   const Auth = useContext(AuthContext);
   const filtredFeed = feedList?.posts
     ? feedList?.posts?.map((tweet) => (
-        <Tweet auth={Auth?.user} key={tweet._id} tweet={tweet} />
+        <div style={{ marginBottom: "1rem" }} key={tweet._id}>
+          <Tweet auth={Auth?.user} tweet={tweet} />
+        </div>
       ))
     : feedList?.users?.map((user) => {
         let isFollowed = followersId.includes(user._id);
         return (
-          <div key={user._id} className={style.miniProfileContainer}>
+          <div key={user._id} className={`bs-1 ${style.miniProfileContainer}`}>
             <MiniProfile
-              style={{ width: "100%" }}
               id={user._id}
               name={user.username}
               bio={user.bio}
@@ -145,6 +147,7 @@ export default function Explore() {
                 followUserHandler(Auth?.user?.token, user?._id)
               }
               isFollowed={isFollowed}
+              profileBackground={user.photoCover}
             />
           </div>
         );
@@ -172,7 +175,7 @@ export default function Explore() {
     <div className={style.exploreContainer}>
       <FilterContent type={filter} changeFilter={setFilter} />
       <div className={style.mainMenu}>
-        <SearchBar></SearchBar>
+        <SearchBar />
         {isLoading ? (
           <div style={{ justifySelf: "center", margin: "0 auto" }}>
             <Spinner />

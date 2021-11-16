@@ -190,9 +190,7 @@ export default function Tweet(props) {
         data.set("image", img);
       }
       submitComment(data, props.auth.token).then((res) => {
-        setCommentsList((state) => {
-          state.push(res.data.comment);
-        });
+        setCommentsList([...commentsList, res.data.comment]);
       });
     }
   }
@@ -217,7 +215,7 @@ export default function Tweet(props) {
         postId={props.tweet._id}
       />
     ));
-  const commentsFeed = props.tweet.comments.map((comment) => (
+  const commentsFeed = commentsList.map((comment) => (
     <Comment
       key={comment._id}
       details={comment}
@@ -253,9 +251,7 @@ export default function Tweet(props) {
         <p className={style.tweetCaption}>{props.tweet.comment}</p>
         <div>{props.tweet.imageUrl ? tweetImage : ""}</div>
         <div className={style.tweetStats}>
-          <div className={style.stat}>
-            {props.tweet.comments.length} Comments
-          </div>
+          <div className={style.stat}>{commentsFeed.length} Comments</div>
           <div className={style.stat}>
             {retweetAdds + props.tweet.retweets.length} Retweets
           </div>
@@ -275,13 +271,18 @@ export default function Tweet(props) {
             <p className={style.buttonText}>Comments</p>
           </button>
           <button
-            onClick={() => {
-              doAction("retweet", props.tweet._id, props.auth.token).then(
-                (res) => {
-                  setIsRetweeted(!isRetweeted);
+            onClick={(e) => {
+              e.target.disabled = true;
+              doAction("retweet", props.tweet._id, props.auth.token)
+                .then((res) => {
+                  if (!isRetweeted) {
+                    setIsRetweeted(true);
+                  }
                   setRetweetAdds(retweetAdds + 1);
-                }
-              );
+                })
+                .finally(() => {
+                  e.target.disabled = false;
+                });
             }}
             style={isRetweeted ? { color: "rgb(var(--g))" } : null}
             className={style.actionButton}
@@ -355,8 +356,8 @@ export default function Tweet(props) {
                 cursor: "pointer",
               }}
             >
-              {props.tweet.comments.length - 3 > 0 &&
-                `+ ${props.tweet.comments.length - 3} other comments`}
+              {commentsFeed.length - 3 > 0 &&
+                `+ ${commentsFeed.length - 3} other comments`}
             </p>
           </div>
         ) : null}

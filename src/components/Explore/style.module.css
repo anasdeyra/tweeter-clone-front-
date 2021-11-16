@@ -16,8 +16,7 @@
 
 .feedContainer {
   display: grid;
-  overflow-y: scroll;
-  gap: 1rem;
+  overflow: hidden;
 }
 
 .filterContainer {
@@ -39,14 +38,14 @@
   cursor: pointer;
 }
 .exploreContainer {
-  padding-bottom: 5rem;
-  padding-top: 2rem;
   display: grid;
   grid-template-rows: auto 1fr;
-  width: 95vw;
+  max-width: 95vw;
   margin: auto;
   gap: 1rem;
-  max-height: 100vh;
+  min-height: 100vh;
+  padding-bottom: 5rem;
+  padding-top: 2rem;
 }
 
 .miniProfileContainer {
@@ -55,6 +54,7 @@
   background: rgb(var(--bg));
   width: clamp(300px, 100%, 600px);
   margin: auto;
+  margin-bottom: 1rem;
 }
 
 @media (min-width: 980px) {
@@ -69,7 +69,7 @@
 
 .searchBarContainer {
   display: grid;
-  width: 100%;
+  max-width: 100%;
   background: rgb(var(--bg));
   grid-template-columns: auto 1fr auto;
   border-radius: 8px;
@@ -80,13 +80,13 @@
 
 .searchInput {
   outline-color: rgb(var(--pr));
-  padding: 0.5rem;
   border: none;
-  font-size: 1rem;
   font-family: "poppins";
+  width: 100%;
 }
 
 .mainMenu {
   display: grid;
   gap: 1rem;
+  align-items: flex-start;
 }
