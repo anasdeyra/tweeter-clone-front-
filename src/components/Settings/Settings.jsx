@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useAuth } from "../../contextes/AuthContext";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { useAuth, AuthContext } from "../../contextes/AuthContext";
 import axios from "axios";
 import style from "./style.module.css";
 import { Button } from "@chakra-ui/react";
@@ -51,6 +51,7 @@ async function getUserDetails(id, token) {
 }
 
 export default function Settings() {
+  const AuthCON = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -112,7 +113,7 @@ export default function Settings() {
           lsUser.username = res.data.user.username;
           lsUser.pp = res.data.user.photoProf;
           localStorage.setItem("currentUser", JSON.stringify(lsUser));
-
+          AuthCON.setUser(lsUser);
           history.push("/profile");
         });
       })

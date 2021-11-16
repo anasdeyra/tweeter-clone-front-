@@ -142,6 +142,10 @@ function UsersModal({ header, usersList, show, off }) {
         followUserHandler={() =>
           followUserHandler(Auth?.user?.token, user?.userId)
         }
+        bio={user.userBio}
+        profileBackground={user.pc}
+        profilePicture={user.pp}
+        count={`${user.userFolllowers.length} followers`}
       />
     );
   });
