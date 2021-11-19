@@ -59,7 +59,6 @@ export default function Settings() {
   const [bio, setBio] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
   const [profileCover, setProfileCover] = useState("");
-  const auth = useAuth();
   const usernameRef = useRef();
   const bioRef = useRef();
   const profilePictureRef = useRef();
@@ -73,7 +72,7 @@ export default function Settings() {
   }
 
   function userDetailsHandler() {
-    getUserDetails(auth.userId, auth.token).then(({ data }) => {
+    getUserDetails(AuthCON.user.userId, AuthCON.user.token).then(({ data }) => {
       const { user } = data;
       setBio(user.bio);
       bioRef.current.value = user.bio;
@@ -106,9 +105,9 @@ export default function Settings() {
       data.set("password", password);
     }
 
-    submitUpdate(auth.token, { data, pp, pc })
+    submitUpdate(AuthCON.user.token, { data, pp, pc })
       .then((res) => {
-        getUserDetails(auth.userId, auth.token).then((res) => {
+        getUserDetails(AuthCON.user.userId, AuthCON.user.token).then((res) => {
           let lsUser = JSON.parse(localStorage.getItem("currentUser"));
           lsUser.username = res.data.user.username;
           lsUser.pp = res.data.user.photoProf;
@@ -167,7 +166,7 @@ export default function Settings() {
           }}
         />
         <h2 style={{ justifySelf: "center", display: "inline" }}>
-          {auth.username}
+          {AuthCON.user.username}
         </h2>
         <p
           style={{
@@ -177,10 +176,10 @@ export default function Settings() {
           }}
         >
           {" "}
-          ({auth.userId})
+          ({AuthCON.user.userId})
         </p>
         <p style={{ display: "none" }} ref={tokenRef}>
-          {auth.token}
+          {AuthCON.user.token}
         </p>
         <button
           className={`pr ${style.copyToken}`}
