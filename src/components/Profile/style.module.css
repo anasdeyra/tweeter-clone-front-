@@ -163,7 +163,7 @@
 .overflowSpacer {
   width: 80%;
   margin: auto;
-  height: 150px;
+  background: red;
 }
 
 .profileContent {

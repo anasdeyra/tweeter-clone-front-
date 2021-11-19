@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { useAuth, AuthContext } from "../../contextes/AuthContext";
+import { AuthContext } from "../../contextes/AuthContext";
 import axios from "axios";
 import style from "./style.module.css";
 import { Button } from "@chakra-ui/react";

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import style from "./style.module.css";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { AuthContext, useAuth } from "../../contextes/AuthContext";
@@ -275,9 +275,17 @@ export default function Profile(props) {
     return response;
   }
 
+  const profileRef = useRef();
+  const [overflowSpacer, setOverflowSpacer] = useState(
+    profileRef.current?.scrollHeight
+  );
+  useEffect(() => {
+    setOverflowSpacer(profileRef.current?.scrollHeight);
+    console.log(overflowSpacer);
+  }, [profileRef.current?.scrollHeight]);
   return (
     <div className={style.profileContainer}>
-      <div className={style.profile}>
+      <div ref={profileRef} className={style.profile}>
         <div className={style.backgroundImage}>
           <img
             className={style.bgv2}
@@ -359,7 +367,10 @@ export default function Profile(props) {
           </div>
         </div>
       </div>
-      <div className={style.overflowSpacer}></div>
+      <div
+        style={{ height: `${overflowSpacer / 2 + 48}px` }}
+        className={style.overflowSpacer}
+      ></div>
       <div className={style.profileContent}>
         <div className={style.contentFilter}>
           <button className={style.filterButton} type="button">
