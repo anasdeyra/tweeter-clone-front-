@@ -281,8 +281,8 @@ export default function Profile(props) {
   );
   useEffect(() => {
     setOverflowSpacer(profileRef.current?.scrollHeight);
-    console.log(overflowSpacer);
-  }, [profileRef.current?.scrollHeight]);
+    console.log(profileRef.current?.scrollHeight);
+  }, [profileRef.current]);
   return (
     <div className={style.profileContainer}>
       <div ref={profileRef} className={style.profile}>
