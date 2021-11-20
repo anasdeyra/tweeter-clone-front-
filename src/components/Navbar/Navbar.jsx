@@ -101,7 +101,7 @@ export default function Navbar(props) {
                       <Avatar
                         sx={{ width: "32px", height: "32px" }}
                         variant="rounded"
-                        src={`https://twetterclone.herokuapp.com/${Auth.user?.pp}`}
+                        src={`${process.env.REACT_APP_SERVER_URL}${Auth.user?.pp}`}
                       ></Avatar>
                       <div
                         onClick={optionsTabHandler}

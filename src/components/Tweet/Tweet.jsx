@@ -32,7 +32,7 @@ function Comment({ details, auth, postId }) {
     };
     const response = await axios
       .post(
-        `https://twetterclone.herokuapp.com/feed/like-comment`,
+        `${process.env.REACT_APP_SERVER_URL}feed/like-comment`,
         data,
         config
       )
@@ -54,7 +54,7 @@ function Comment({ details, auth, postId }) {
     <div className={style.commentContainer}>
       <Avatar
         variant="rounded"
-        src={`https://twetterclone.herokuapp.com/${details.pp}`}
+        src={`${process.env.REACT_APP_SERVER_URL}${details.pp}`}
       />
       <div className={style.commentContentContainer}>
         <div className={style.commentContent}>
@@ -68,7 +68,7 @@ function Comment({ details, auth, postId }) {
           {details.imageUrl ? (
             <img
               className={style.commentImage}
-              src={`https://twetterclone.herokuapp.com/${details.imageUrl}`}
+              src={`${process.env.REACT_APP_SERVER_URL}${details.imageUrl}`}
               alt="comment Img"
             />
           ) : null}
@@ -105,7 +105,7 @@ async function submitComment(data, token) {
   };
 
   let response = await axios
-    .post(`https://twetterclone.herokuapp.com/feed/comment-post`, data, config)
+    .post(`${process.env.REACT_APP_SERVER_URL}feed/comment-post`, data, config)
     .then((res) => {
       return res;
     });
@@ -138,7 +138,7 @@ async function doAction(action, postId, token) {
   }
 
   let response = await axios
-    .post(`https://twetterclone.herokuapp.com/feed/${endPoint}`, data, config)
+    .post(`${process.env.REACT_APP_SERVER_URL}feed/${endPoint}`, data, config)
     .then((res) => {
       return res;
     })
@@ -169,7 +169,7 @@ export default function Tweet(props) {
   const tweetImage = (
     <img
       className={style.tweetImage}
-      src={`https://twetterclone.herokuapp.com/${props.tweet.imageUrl}`}
+      src={`${process.env.REACT_APP_SERVER_URL}${props.tweet.imageUrl}`}
       alt="tweet"
     />
   );
@@ -238,7 +238,7 @@ export default function Tweet(props) {
         <div className={style.tweetAuth}>
           <Avatar
             variant="rounded"
-            src={`https://twetterclone.herokuapp.com/${props.tweet.pp}`}
+            src={`${process.env.REACT_APP_SERVER_URL}${props.tweet.pp}`}
           />
 
           <div className={style.authStats}>
@@ -320,7 +320,7 @@ export default function Tweet(props) {
         <div className={style.tweetComment}>
           <Avatar
             variant="rounded"
-            src={`https://twetterclone.herokuapp.com/${props.auth.pp}`}
+            src={`${process.env.REACT_APP_SERVER_URL}${props.auth.pp}`}
           />
 
           <form className={style.commentForm} onSubmit={submitHandler}>

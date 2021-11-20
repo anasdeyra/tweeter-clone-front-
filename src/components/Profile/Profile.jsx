@@ -20,7 +20,7 @@ export async function followUserHandler(token, id) {
     mode: "no-cors",
   };
   let response = await axios.post(
-    `https://twetterclone.herokuapp.com/feed/follow-user`,
+    `${process.env.REACT_APP_SERVER_URL}feed/follow-user`,
     data,
     config
   );
@@ -36,7 +36,7 @@ export async function getUser(token, uid) {
     mode: "no-cors",
   };
   let response = await axios.get(
-    `https://twetterclone.herokuapp.com/feed/${uid}`,
+    `${process.env.REACT_APP_SERVER_URL}feed/${uid}`,
     config
   );
   return response;
@@ -60,7 +60,7 @@ export function MiniProfile({
       <div className={style.miniProfileContent}>
         <Avatar
           variant="rounded"
-          src={`https://twetterclone.herokuapp.com/${profilePicture}`}
+          src={`${process.env.REACT_APP_SERVER_URL}${profilePicture}`}
         ></Avatar>
         <div className={style.miniProfileHeader}>
           <h4 className={style.miniProfileName}>
@@ -118,7 +118,7 @@ export function MiniProfile({
         className={style.miniProfileBackground}
         src={
           profileBackground
-            ? `https://twetterclone.herokuapp.com/${profileBackground}`
+            ? `${process.env.REACT_APP_SERVER_URL}${profileBackground}`
             : `${process.env.PUBLIC_URL}/img/default pc.jpg`
         }
         alt="Profile background"
@@ -191,7 +191,7 @@ async function getUserTweets(uid, token) {
     mode: "no-cors",
   };
   let res = await axios
-    .get(`https://twetterclone.herokuapp.com/feed/tweets/${uid}`, config)
+    .get(`${process.env.REACT_APP_SERVER_URL}feed/tweets/${uid}`, config)
     .then((res) => {
       return res;
     });
@@ -268,7 +268,7 @@ export default function Profile(props) {
       mode: "no-cors",
     };
     let response = await axios.post(
-      `https://twetterclone.herokuapp.com/feed/follow-user`,
+      `${process.env.REACT_APP_SERVER_URL}feed/follow-user`,
       data,
       config
     );
@@ -276,12 +276,11 @@ export default function Profile(props) {
   }
 
   const profileRef = useRef();
-  const [overflowSpacer, setOverflowSpacer] = useState(
-    profileRef.current?.scrollHeight
-  );
+  const scrollHeight = profileRef.current?.scrollHeight;
+  const [overflowSpacer, setOverflowSpacer] = useState(scrollHeight);
   useEffect(() => {
-    setOverflowSpacer(profileRef.current?.scrollHeight);
-    console.log(profileRef.current?.scrollHeight);
+    setOverflowSpacer(scrollHeight);
+    // eslint-disable-next-line
   }, [profileRef.current]);
   return (
     <div className={style.profileContainer}>
@@ -291,7 +290,7 @@ export default function Profile(props) {
             className={style.bgv2}
             src={
               photoCover
-                ? `https://twetterclone.herokuapp.com/${photoCover}`
+                ? `${process.env.REACT_APP_SERVER_URL}${photoCover}`
                 : `${process.env.PUBLIC_URL}/img/default pc.jpg`
             }
             alt="pc"
@@ -301,7 +300,7 @@ export default function Profile(props) {
               <img
                 src={
                   photoProf
-                    ? `https://twetterclone.herokuapp.com/${photoProf}`
+                    ? `${process.env.REACT_APP_SERVER_URL}${photoProf}`
                     : `${process.env.PUBLIC_URL}/img/default pp.jpg`
                 }
                 alt="pp"

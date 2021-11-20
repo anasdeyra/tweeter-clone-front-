@@ -37,7 +37,7 @@ async function getTweets(token, type = "Top") {
   }
 
   let response = await axios.get(
-    `https://twetterclone.herokuapp.com/feed/${endpoint}`,
+    `${process.env.REACT_APP_SERVER_URL}feed/${endpoint}`,
     config
   );
 
@@ -69,7 +69,6 @@ function SearchBar(params) {
   const history = useHistory();
   const Auth = useContext(AuthContext);
   function searchHandler() {
-    console.log(searchRef.current.value);
     setIsLoading(true);
     const config = {
       headers: {
@@ -81,16 +80,14 @@ function SearchBar(params) {
     };
     axios
       .post(
-        "https://twetterclone.herokuapp.com/feed/user/",
+        `${process.env.REACT_APP_SERVER_URL}feed/user/`,
         { username: searchRef.current.value },
         config
       )
       .then((res) => {
         history.push(`/profile/${res.data.id}`);
       })
-      .catch((e) => {
-        console.log({ e });
-      })
+
       .finally(() => {
         setIsLoading(false);
       });

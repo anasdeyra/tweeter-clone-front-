@@ -21,16 +21,16 @@ async function submitUpdate(token, { pc = null, pp = null, data = null }) {
   if (pp) {
     let data = new Formdata();
     data.set("image", pp);
-    await axios.put(`https://twetterclone.herokuapp.com/edit/pp`, data, config);
+    await axios.put(`${process.env.REACT_APP_SERVER_URL}edit/pp`, data, config);
   }
   if (pc) {
     let data = new Formdata();
     data.set("image", pc);
-    await axios.put(`https://twetterclone.herokuapp.com/edit/cp`, data, config);
+    await axios.put(`${process.env.REACT_APP_SERVER_URL}edit/cp`, data, config);
   }
   if (data) {
     response = await axios.put(
-      `https://twetterclone.herokuapp.com/edit/user-info`,
+      `${process.env.REACT_APP_SERVER_URL}edit/user-info`,
       data,
       config
     );
@@ -40,13 +40,13 @@ async function submitUpdate(token, { pc = null, pp = null, data = null }) {
 
 async function getUserDetails(id, token) {
   let response = await axios
-    .get(`https://twetterclone.herokuapp.com/feed/${id}`, {
+    .get(`${process.env.REACT_APP_SERVER_URL}feed/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-    .then((res) => res)
-    .catch((err) => console.log({ err }));
+    .then((res) => res);
+
   return response;
 }
 
@@ -145,7 +145,7 @@ export default function Settings() {
           className={style.pc}
           src={
             profileCover
-              ? `https://twetterclone.herokuapp.com/${profileCover}`
+              ? `${process.env.REACT_APP_SERVER_URL}${profileCover}`
               : `${process.env.PUBLIC_URL}/img/default pc.jpg`
           }
           alt="Profile background"
@@ -157,7 +157,7 @@ export default function Settings() {
           className={style.pp}
           src={
             profilePicture
-              ? `https://twetterclone.herokuapp.com/${profilePicture}`
+              ? `${process.env.REACT_APP_SERVER_URL}${profilePicture}`
               : `${process.env.PUBLIC_URL}/img/default pp.jpg`
           }
           alt="Profile pic"

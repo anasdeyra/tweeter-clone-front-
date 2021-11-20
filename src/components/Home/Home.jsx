@@ -16,7 +16,7 @@ async function getTweetsFeed(token) {
     mode: "no-cors",
   };
   let response = await axios
-    .get("https://twetterclone.herokuapp.com/feed/followers-posts", config)
+    .get(`${process.env.REACT_APP_SERVER_URL}feed/followers-posts`, config)
     .then((res) => {
       return res?.data?.posts;
     });

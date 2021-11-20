@@ -15,7 +15,7 @@ async function getBookmarks(token) {
     mode: "no-cors",
   };
   let response = await axios.get(
-    "https://twetterclone.herokuapp.com/feed/bookmarks",
+    `${process.env.REACT_APP_SERVER_URL}feed/bookmarks`,
     config
   );
 

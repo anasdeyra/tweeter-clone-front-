@@ -46,9 +46,7 @@ function App() {
                 name="rjab"
                 count="120k followers"
                 isFollowed={false}
-                followUserHandler={() => {
-                  console.log("test");
-                }}
+                followUserHandler={() => {}}
                 profilePicture="/images/pp.png"
                 bio={"yea boiiiiiii"}
                 id={1}

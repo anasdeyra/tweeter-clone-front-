@@ -42,7 +42,7 @@ export default function CreateTweet(props) {
     };
     axios
       .post(
-        `https://twetterclone.herokuapp.com/feed/create-tweet`,
+        `${process.env.REACT_APP_SERVER_URL}feed/create-tweet`,
         data,
         config
       )
@@ -73,7 +73,7 @@ export default function CreateTweet(props) {
         <Avatar
           src={
             Auth?.user?.pp
-              ? `https://twetterclone.herokuapp.com/${Auth?.user?.pp}`
+              ? `${process.env.REACT_APP_SERVER_URL}${Auth?.user?.pp}`
               : `pp.jpg`
           }
           variant="rounded"
