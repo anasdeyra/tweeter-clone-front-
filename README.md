@@ -1,2 +1,2 @@
 # tweeter - a twitter clone.
-My front-end first project with my friend [Youssef](https://github.com/youssefmahersi) on the backend.
+My first front-end project made with my friend [Youssef](https://github.com/youssefmahersi) on the backend.
